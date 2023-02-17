@@ -13,6 +13,9 @@ from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
+import sentry_sdk
+from sentry_sdk.integrations.starlette import StarletteIntegration
+from sentry_sdk.integrations.fastapi import FastApiIntegration
 
 from app.routers import base, auth, app, app_connection
 from app.helpers.templates import templates
@@ -24,6 +27,14 @@ ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
+sentry_sdk.init(
+    dsn=os.getenv('SENTRY_DSN_FASTAPI'),
+    integrations=[
+        StarletteIntegration(transaction_style="url"),
+        FastApiIntegration(transaction_style="url"),
+    ],
+    traces_sample_rate=1.0,
+)
 
 #config = config.get(environ.get('FASTAPI_CONFIG') or 'default')
 

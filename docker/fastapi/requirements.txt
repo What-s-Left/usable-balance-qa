@@ -14,3 +14,4 @@ xero-python==1.21.0
 authlib==1.1.0
 httpx==0.23.0
 rauth==0.7.3
+sentry-sdk[fastapi]==1.11.1
