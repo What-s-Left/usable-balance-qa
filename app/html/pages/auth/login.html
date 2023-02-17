@@ -1,0 +1,55 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Redirecting to Login...{% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+{% block content %}
+    <div class="px-4 py-5 my-5 text-center">
+        <h3 class="display-5 fw-bold">Redirecting...</h3>
+    </div>
+{% endblock content %}
+
+
+<!-- Specific JS goes HERE -->
+{% block javascript %}
+<script type="text/javascript">
+window.onload = function() {
+
+    params = parse_query_string()
+
+    if (!params.state)
+    {
+        // Create unique state to send with login
+        state_unique = random_string(20)
+        sessionStorage.setItem('auth_state', state_unique)
+        sessionStorage.setItem('auth_redirect', document.referrer)
+        location.href = window.location.pathname + "?state=" + state_unique + "&redirect=" + encodeURIComponent(document.referrer)
+    }
+}
+</script>
+
+{% endblock javascript %}
+
+
+<!doctype html>
+<html>
+<head>
+    <title>Redirecting...</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/1.20/auth0-spa-js.production.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/latest/js.cookie.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+
+    <body>
+
+
+    </body>
+</html>

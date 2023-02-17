@@ -1,0 +1,30 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Logging in...{% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+{% block content %}
+    <div class="px-4 py-5 my-5 text-center">
+        <h3 class="display-5 fw-bold">Logging in...</h3>
+    </div>
+{% endblock content %}
+
+
+<!-- Specific JS goes HERE -->
+{% block javascript %}
+<script type="text/javascript">
+window.onload = function() {
+    sessionStorage.setItem('auth_access_token', '{{ request.session["auth_access_token"] }}')
+    sessionStorage.setItem('auth_id_token', '{{ request.session["auth_id_token"] }}')
+    sessionStorage.setItem('auth_scope', '{{ request.session["auth_scope"] }}')
+    sessionStorage.setItem('auth_expires', '{{ request.session["auth_expires"] }}')
+
+    location.href = sessionStorage.getItem('auth_redirect')
+}
+</script>
+
+{% endblock javascript %}

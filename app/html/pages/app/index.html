@@ -1,0 +1,110 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Welcome{% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="px-4 py-5 my-5 text-center">
+    <h2 class="display-7 fw-bold">Nau mai, welcome <mark>{{ user.details.name }}</mark><em>.</em></h2>
+
+    {% if entities|length > 0 %}
+        <div class="col-lg-6 mx-auto pt-5">
+
+            {% for entity in entities %}
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">{{ entity.name }}</h5>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">Usable Balance</h6>
+                    <h1 class="card-text">{{ "${:,.2f}".format(entity.balance.amount_usable) }}</h1>
+                    <p><small>How did we figure this out? <a href="#">find out here</a>.</small></p>
+                    <h5>Bank: {{ "${:,.2f}".format(entity.balance.amount_bank) }} / Position {{ "${:,.2f}".format(entity.balance.amount_position) }}</h5>
+
+
+
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        {% if entity.status.connection_state == "NEW" %}
+                            <h5><i class="bi-clock-history"></i></h5>
+                            <p>Just a mo, we're about to start understanding your financials.</p>
+                        {% elif entity.status.connection_state == "CONNECTED" %}
+                            {% if entity.status.connection_status == "IDLE" %}
+                                <h5><i class="bi-calendar-event"></i></h5>
+                                {% if entity.balance.datetime_transaction_latest %}
+                                <p>
+                                    Balance as of {{ entity.balance.datetime_transaction_latest.strftime("%B %d, %Y") }}
+                                </p>
+                                {% else %}
+                                <p>
+                                    No transactions have been grabbed yet.
+                                </p>
+                                {% endif %}
+                            {% elif entity.status.connection_status == "ERROR" %}
+                                <h5><i class="bi-exclamation-octagon-fill"></i></h5>
+                                <p>
+                                    There's an issue with getting your latest financials, we'll try again soon.
+                                </p>
+                            {% else %}
+                                {% if entity.status.connection_status == "SYNC" %}
+                                <h5><i class="bi-cloud-arrow-down-fill"></i></h5>
+                                <p>
+                                    We're currently getting the latest financials for your organisation...
+                                </p>
+                                {% elif entity.status.connection_status == "SYNC_ENTITY" %}
+                                <h5><i class="bi-cloud-arrow-down-fill"></i></h5>
+                                <p>
+                                    We're currently getting the latest details about your organisation...
+                                </p>
+                                {% elif entity.status.connection_status == "SYNC_ACCOUNTS" %}
+                                <h5><i class="bi-cloud-arrow-down-fill"></i></h5>
+                                <p>
+                                    We're currently getting the latest accounts from your organisation...
+                                </p>
+                                {% elif entity.status.connection_status == "SYNC_TRANSACTIONS" %}
+                                <h5><i class="bi-cloud-arrow-down-fill"></i></h5>
+                                <p>
+                                    We're currently getting the latest transactions from your organisation...
+                                </p>
+                                {% endif %}
+                            {% endif %}
+                        {% else %}
+                            <h5><i class="bi-exclamation-octagon-fill"></i></h5>
+                            <p>
+                                There's an issue with getting your financials, please try <a href="/app/connection/xero">re-connecting</a>.
+                            </p>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item">Sync Status: {{ entity.status.connection_state }} & {{ entity.status.connection_status }}</li>
+                </ul>
+            </div>
+
+            {% endfor %}
+        </div>
+        <div class="col-lg-6 mx-auto pt-5">
+            <a href="/app/connection/xero" class="btn btn-lg btn-outline-primary px-4 gap-3">Connect another business via Xero</a>
+        </div>
+
+    {% else %}
+        <div class="col-lg-6 mx-auto pt-5">
+            You don't seem to have connected your business yet.
+            </div>
+        <div class="col-lg-6 mx-auto pt-5">
+            <a href="/app/connection/xero" class="btn btn-lg btn-primary px-4 gap-3">Connect your first business via Xero</a>
+        </div>
+    {% endif %}
+
+  </div>
+{% endblock content %}
+
+
+<!-- Specific JS goes HERE -->
+{% block javascript %}
+
+{% endblock javascript %}

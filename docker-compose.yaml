@@ -1,0 +1,47 @@
+---
+version: '3'
+x-www-common:
+  &www-common
+  # In order to add custom dependencies or upgrade provider packages you can use your extended image.
+  # Comment the image line, place your Dockerfile in the directory where you placed the docker-compose.yaml
+  # and uncomment the "build" line below, Then run `docker-compose build` to build the images.
+    image: usable-balance/fastapi-www
+    build:
+      context: ./
+      dockerfile: ./docker/fastapi/Dockerfile
+    environment:
+      &api-common-env
+      SENTRY_DSN: "https://d1563f5025754950b5b20058f4a07ea5@o1114063.ingest.sentry.io/6609797"
+    volumes:
+      - ./:/opt/src
+    user: "${APP_UID:-50000}:0"
+    networks:
+      - usable-balance-www
+
+services:
+  www-webserver:
+    container_name: usable-balance-www-app
+    hostname: www-app
+    tty: true
+    <<: *www-common
+    command: python main.py
+    ports:
+      - "7400:8080"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:5000/"]
+      interval: 60s
+      timeout: 90s
+      retries: 5
+    restart: unless-stopped
+
+  www-cli:
+    container_name: usable-balance-www-cli
+    hostname: www-cli
+    tty: true
+    <<: *www-common
+    command:
+      - bash
+
+networks:
+  usable-balance-www:
+    name: usable-balance

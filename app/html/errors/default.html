@@ -1,0 +1,27 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Sign up or Login{% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="px-4 py-5 my-5 text-center">
+    <h1 class="display-5 fw-bold">Uh oh, our systems didn't like what just happened.</em></h1>
+    <div class="col-lg-6 mx-auto pt-5">
+        <p class="lead mb-4">We've stored what happened and will be alerted about it. It may be worth trying again (refreshing) or heading to the homepage.</p>
+        <p><small>(Error message: {{ detail }})</small></p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center pt-5">
+            <a href="/" class="btn btn-primary btn-lg px-4 gap-3">Head home</a>
+        </div>
+    </div>
+  </div>
+{% endblock content %}
+
+
+<!-- Specific JS goes HERE -->
+{% block javascript %}
+
+{% endblock javascript %}

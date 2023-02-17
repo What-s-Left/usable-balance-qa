@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+		<meta name="description" content="Usable Balance">
+		<title>Usable Balance: {% block title %}Welcome{% endblock title %}</title>
+
+		<!-- CSS only -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100;200;300;400;500;600;700;800;900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+		<link href="/assets/css/app.css" rel="stylesheet" crossorigin="anonymous">
+
+		{% block stylesheets %}
+        {% endblock stylesheets %}
+	</head>
+
+	<body>
+		<div class="container">
+			<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+				<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+					<img class="bi me-2" src="/assets/img/logo.png" height="70"/>
+				</a>
+
+				<ul class="nav nav-pills">
+					{% if user %}
+					<li class="nav-item"><a href="/auth/logout" class="btn btn-outline-primary">Logout</a></li>
+					{% else %}
+					<li class="nav-item"><a href="/auth/login" class="btn btn-primary">Login / Sign Up</a></li>
+					{% endif %}
+
+				</ul>
+			</header>
+		</div>
+		<div class="container">
+		{% block content %}
+
+		{% endblock content %}
+		</div>
+
+		<div class="container">
+			<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+				<p class="col-md-4 mb-0 text-muted">&copy;2023  What's Left Holdings Ltd.</p>
+
+				<ul class="nav col-md-4 justify-content-end">
+					<li class="nav-item"><a href="/" class="nav-link px-2 text-muted">Home</a></li>
+					<li class="nav-item"><a href="/pricing" class="nav-link px-2 text-muted">Pricing</a></li>
+					<li class="nav-item"><a href="/about" class="nav-link px-2 text-muted">About</a></li>
+					<li class="nav-item"><a href="/legal" class="nav-link px-2 text-muted">Legal</a></li>
+					<li class="nav-item"><a href="/contact" class="nav-link px-2 text-muted">Contact</a></li>
+				</ul>
+			</footer>
+		</div>
+
+
+		{% block javascript %}
+		{% endblock javascript %}
+
+		<!-- JavaScript Bundle with Popper -->
+		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+		<script src="/assets/js/app.js"></script>
+	</body>
+</html>
