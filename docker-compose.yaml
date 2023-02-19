@@ -16,17 +16,17 @@ x-www-common:
       - ./:/opt/src
     user: "${APP_UID:-50000}:0"
     networks:
-      - usable-balance-www
+      - usable-balance-qa
 
 services:
   www-webserver:
-    container_name: usable-balance-www-app
+    container_name: usable-balance-qa-app
     hostname: www-app
     tty: true
     <<: *www-common
     command: python main.py
     ports:
-      - "7400:8080"
+      - "7500:8080"
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:5000/"]
       interval: 60s
@@ -35,7 +35,7 @@ services:
     restart: unless-stopped
 
   www-cli:
-    container_name: usable-balance-www-cli
+    container_name: usable-balance-qa-cli
     hostname: www-cli
     tty: true
     <<: *www-common
@@ -43,5 +43,5 @@ services:
       - bash
 
 networks:
-  usable-balance-www:
+  usable-balance-qa:
     name: usable-balance
