@@ -9754,4 +9754,13 @@ mark, .mark {
   color: #8E00FD;
 }
 
+body > div.container:first-child {
+  background-color: #8E00FD !important;
+  color: #fff;
+}
+body > div.container:first-child a {
+  color: #fff;
+  border-color: #fff;
+}
+
 /*# sourceMappingURL=app.css.map */

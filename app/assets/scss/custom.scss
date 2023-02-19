@@ -18,3 +18,16 @@ mark
 {
   color: #8E00FD;
 }
+
+body > div.container:first-child
+{
+  background-color: $primary !important;
+  color: #fff;
+
+  a
+  {
+    color: #fff;
+    border-color: #fff;
+  }
+}
+

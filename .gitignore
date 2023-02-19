@@ -2,3 +2,7 @@
 .idea/
 
 .env
+
+app/__pycache__/
+
+app/assets/img/.DS_Store
