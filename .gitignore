@@ -6,3 +6,9 @@
 app/__pycache__/
 
 app/assets/img/.DS_Store
+
+app/routers/__pycache__/
+
+app/helpers/__pycache__/
+
+app/assets/.DS_Store

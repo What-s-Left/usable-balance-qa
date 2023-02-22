@@ -23,7 +23,6 @@
                 <div class="card-body">
                     <h6 class="card-subtitle mb-2 text-muted">Usable Balance</h6>
                     <h1 class="card-text">{{ "${:,.2f}".format(entity.balance.amount_usable) }}</h1>
-                    <p><small>How did we figure this out? <a href="#">find out here</a>.</small></p>
                     <h5>Bank: {{ "${:,.2f}".format(entity.balance.amount_bank) }} / Position {{ "${:,.2f}".format(entity.balance.amount_position) }}</h5>
 
 
@@ -82,6 +81,7 @@
                         {% endif %}
                     </li>
                     <li class="list-group-item">Sync Status: {{ entity.status.connection_state }} & {{ entity.status.connection_status }}</li>
+                    <li class="list-group-item"><a href="/app/reconcile/{{ entity.id }}" class="btn btn-lg btn-outline-primary px-4 gap-3">Reconcile</a></li>
                 </ul>
             </div>
 
