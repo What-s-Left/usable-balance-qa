@@ -15,6 +15,6 @@ if __name__ == "__main__":
         workers=4,
         log_level="info",
         reload=True,
-        ssl_keyfile=f"app/certs/{os.getenv('SSL_KEYFILE')}",
-        ssl_certfile=f"app/certs/{os.getenv('SSL_CERTFILE')}"
+        #ssl_keyfile=f"app/certs/{os.getenv('SSL_KEYFILE')}",
+        #ssl_certfile=f"app/certs/{os.getenv('SSL_CERTFILE')}"
     )
