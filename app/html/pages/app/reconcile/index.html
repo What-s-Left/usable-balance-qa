@@ -1,0 +1,53 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Welcome{% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="px-4 py-2 my-2 text-center">
+    <h2 class="display-7 fw-bold">Reconciling <mark>{{ entity.name }}</mark><em>.</em></h2>
+</div>
+<div class="px-4 py-0 my-0">
+    <ul class="card">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Desc</th>
+                    <th scope="col">Debit</th>
+                    <th scope="col">Credit</th>
+                    <th scope="col">Running Balance</th>
+                    <th scope="col">Gross</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for transaction in reconcile.transactions %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <th scope="row">{{ transaction.datetime|format_datetime }}</th>
+                    <td>{{ transaction.type }}</td>
+                    <td>{{ transaction.desc }}</td>
+                    <td>{% if transaction.type == "DR" %}{{ transaction.amount_tax|replace("-", "") }}{% endif %}</td>
+                    <td>{% if transaction.type == "CR" %}{{ transaction.amount_tax|replace("-", "") }}{% endif %}</td>
+                    <td>{{ "%.2f"|format(transaction.amount_balance) }}</td>
+                    <td>{{ transaction.amount_tax}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </ul>
+
+</div>
+{% endblock content %}
+
+
+<!-- Specific JS goes HERE -->
+{% block javascript %}
+
+{% endblock javascript %}

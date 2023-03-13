@@ -7,8 +7,18 @@ app/__pycache__/
 
 app/assets/img/.DS_Store
 
+<<<<<<< HEAD
 app/data/__pycache__/
 
 app/helpers/__pycache__/
 
 app/routers/__pycache__/
+=======
+app/routers/__pycache__/
+
+app/helpers/__pycache__/
+
+app/assets/.DS_Store
+
+app/data/__pycache__/
+>>>>>>> master
