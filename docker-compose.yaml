@@ -20,7 +20,7 @@ x-www-common:
 
 services:
   app-webserver:
-    container_name: usable-balance-qa-app
+    container_name: usable-balance-qa-app-webserver
     hostname: www-app
     tty: true
     <<: *www-common
@@ -35,7 +35,7 @@ services:
     restart: unless-stopped
 
   app-cli:
-    container_name: usable-balance-qa-cli
+    container_name: usable-balance-qa-app-cli
     hostname: www-cli
     tty: true
     <<: *www-common
