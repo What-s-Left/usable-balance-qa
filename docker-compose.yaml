@@ -19,7 +19,7 @@ x-www-common:
       - usable-balance-qa
 
 services:
-  www-webserver:
+  app-webserver:
     container_name: usable-balance-qa-app
     hostname: www-app
     tty: true
@@ -34,7 +34,7 @@ services:
       retries: 5
     restart: unless-stopped
 
-  www-cli:
+  app-cli:
     container_name: usable-balance-qa-cli
     hostname: www-cli
     tty: true
