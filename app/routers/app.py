@@ -40,6 +40,12 @@ async def homepage(
         entity_status = api_request(url=f"/entities/{entity['id']}/status")
         entities[idx]['status'] = entity_status
 
+        entity['type'] = "BANK"
+        if "XERO" in entity['id_src']:
+            entity['type'] = "XERO"
+        elif "MYOB" in entity['id_src']:
+            entity['type'] = "MYOB"
+
     response = templates.TemplateResponse("pages/app/index.html", {
         "request": request,
         "user": user,
