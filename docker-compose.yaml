@@ -45,3 +45,4 @@ services:
 networks:
   usable-balance-qa:
     name: usable-balance
+    external: true
