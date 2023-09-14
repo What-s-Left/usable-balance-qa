@@ -33,7 +33,7 @@
                     <th scope="row">{{ transaction.datetime|format_datetime }}</th>
                     <td>{{ transaction.trans_nature }}</td>
                     <td>{{ transaction.desc }}
-                    {% if transaction.trans_nature == 'TE' %}
+                    {% if transaction.trans_nature == 'TE' or transaction.trans_nature == 'PE' %}
                         <p>
                           <small>Bank Rule<br/><code>{{ transaction.src.bank_rule }}</code></small>
                         </p>
