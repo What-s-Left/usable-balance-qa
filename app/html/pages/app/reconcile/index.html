@@ -22,8 +22,8 @@
                     <th scope="col">Desc</th>
                     <th scope="col">Debit</th>
                     <th scope="col">Credit</th>
-                    <th scope="col">Running Balance</th>
-                    <th scope="col">Gross</th>
+                    <th scope="col">Tax</th>
+                    <th scope="col">Balance</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,12 +31,18 @@
                 <tr>
                     <th scope="row">{{ loop.index }}</th>
                     <th scope="row">{{ transaction.datetime|format_datetime }}</th>
-                    <td>{{ transaction.type }}</td>
-                    <td>{{ transaction.desc }}</td>
-                    <td>{% if transaction.type == "DR" %}{{ transaction.amount_tax|replace("-", "") }}{% endif %}</td>
-                    <td>{% if transaction.type == "CR" %}{{ transaction.amount_tax|replace("-", "") }}{% endif %}</td>
-                    <td>{{ "%.2f"|format(transaction.amount_balance) }}</td>
-                    <td>{{ transaction.amount_tax}}</td>
+                    <td>{{ transaction.trans_nature }}</td>
+                    <td>{{ transaction.desc }}
+                    {% if transaction.trans_nature == 'TE' %}
+                        <p>
+                          <small>Bank Rule<br/><code>{{ transaction.src.bank_rule }}</code></small>
+                        </p>
+                    {% endif %}
+                    </td>
+                    <td>{% if transaction.trans_type == "DR" %}{{ transaction.amount_total|replace("-", "") }}{% endif %}</td>
+                    <td>{% if transaction.trans_type == "CR" %}{{ transaction.amount_total|replace("-", "") }}{% endif %}</td>
+                    <td>{{ "%.2f"|format(transaction.amount_tax)|replace("-", "") }}</td>
+                    <td>{{ "%.2f"|format(transaction.amount_balance ) }}</td>
                 </tr>
             {% endfor %}
             </tbody>
