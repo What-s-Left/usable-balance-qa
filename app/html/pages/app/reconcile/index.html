@@ -34,8 +34,15 @@
                     <td>{{ transaction.trans_nature }}</td>
                     <td>{{ transaction.desc }}
                     {% if transaction.trans_nature == 'TE' or transaction.trans_nature == 'PE' %}
-                        <p>
-                          <small>Bank Rule<br/><code>{{ transaction.src.bank_rule }}</code></small>
+                        <p><br/>
+                          <small><strong>Bank Rule</strong></small>
+                            <br/>
+                            <code>
+                            <small>Transaction amount: ${{ transaction.src.amount }}<br/>
+                            Payee: {{ transaction.src.desc }}<br/>
+                            Reference: {{ transaction.src.reference }}<br/>
+                            Rule: {{ transaction.src.bank_rule }}</small>
+</code>
                         </p>
                     {% endif %}
                     </td>
