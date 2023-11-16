@@ -31,3 +31,137 @@ body > div.container:first-child
   }
 }
 
+
+
+html, body {
+  font-family: 'Lexend Deca', sans-serif;
+  font-weight: 300;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Poppins', sans-serif;
+}
+
+.lh-1 {
+  line-height: 1;
+}
+
+.lh-1-5 {
+  line-height: 1.5;
+}
+
+.lh-2 {
+  line-height: 2;
+}
+
+em {
+  font-style: normal;
+  color: $primary;
+}
+
+mark {
+  color: $primary;
+}
+
+div.resize-text {
+  container-type: inline-size;
+}
+
+
+h1.primary {
+  color: $primary;
+}
+
+.resize-text {
+  h1 {
+    font-weight: 600;
+    font-size: 16cqw;
+  }
+
+
+  h2 {
+    font-size: 7.5cqw;
+    font-weight: 700;
+  }
+}
+
+h2, h5 {
+
+
+}
+
+.amount-tax h5 {
+  color: $primary;
+}
+
+h4 {
+
+}
+
+.amount-bank h5 {
+  color: $secondary;
+}
+
+img.amount-bank, img.amount-position {
+  width: 57%;
+}
+
+img.amount-bank-divider, img.amount-tax-divider {
+  height: 80px;
+}
+
+img.bank-account-logo {
+  width: 1em;
+}
+
+div .alert-danger a {
+  color: $red
+}
+
+.flex-grow-container {
+  flex-grow: 1;
+}
+
+.summary {
+  border: solid 1px $secondary;
+  padding: 1em;
+  margin: 0.5em;
+}
+
+.entity-connect {
+  border: solid 1px #ccc;
+  padding: 1em;
+  margin: 0.5em;
+
+}
+
+.entity-connect.xero {
+  background-color: #13B6EA;
+  color: #fff;
+}
+
+.entity-connect.coming-soon {
+  background-color: #fefefe;
+  color: #aaa;
+}
+
+.entity-summary {
+  border: solid 1px $secondary;
+  padding: 1em;
+  margin: 0.5em;
+
+  h3 {
+    color: $primary;
+    font-weight: 600;
+  }
+}
+
+.nav .user-logged-in {
+  color: $secondary;
+  font-size: 0.8em;
+  line-height: 1;
+
+  i {
+    font-size: 2em;
+  }
+}
