@@ -1,4 +1,5 @@
 import datetime
+from json import JSONDecodeError
 
 from dotenv import find_dotenv, load_dotenv
 
@@ -81,7 +82,43 @@ def start_api():
 www = start_api()
 
 
-@www.exception_handler(StarletteHTTPException)
-async def my_custom_exception_handler(request: Request, exc: StarletteHTTPException):
+@www.middleware("http")
+async def catch_exceptions_middleware(request: Request, call_next):
+    try:
+        return await call_next(request)
+    except Exception as exc:
+        # Log the exception here
+        return error_response(
+            request=request, status_code=500, detail=", ".join(exc.args)
+        )
+
+
+@www.exception_handler(Exception)
+async def universal_exception_handler(request: Request, exc: Exception):
     # print(exc.status_code, exc.detail)
-    return error_response(request=request, status_code=exc.status_code, detail=exc.detail)
+
+    return error_response(
+        request=request, status_code=500, detail=", ".join(exc.args)
+    )
+
+@www.exception_handler(StarletteHTTPException)
+async def http_exception_handler(request: Request, exc: StarletteHTTPException):
+    # print(exc.status_code, exc.detail)
+
+    if exc.status_code in [301, 302, 303, 307]:
+        return Response(
+            status_code=exc.status_code, headers={"Location": exc.headers["Location"]}
+        )
+    else:
+        return error_response(
+            request=request, status_code=exc.status_code, detail=exc.detail
+        )
+
+
+@www.exception_handler(JSONDecodeError)
+async def json_exception_handler(request: Request, exc: JSONDecodeError):
+    # print(exc.status_code, exc.detail)
+
+    return error_response(
+        request=request, status_code="400", detail="API response not JSON"
+    )
