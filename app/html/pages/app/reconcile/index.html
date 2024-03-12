@@ -12,102 +12,70 @@
     <h2 class="display-7 fw-bold">Reconciling <mark>{{ entity.name }}</mark><em>.</em></h2>
 </div>
 <div class="px-4 py-0 my-0">
-    <ul class="card">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Desc</th>
-                    <th scope="col">Debit</th>
-                    <th scope="col">Credit</th>
-                    <th scope="col">Tax</th>
-                    <th scope="col">Balance</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for transaction in reconcile.transactions %}
-                <tr>
-                    <th scope="row">{{ loop.index }}</th>
-                    <th scope="row">{{ transaction.datetime|format_datetime }}</th>
-                    <td>{{ transaction.trans_nature }}</td>
-                    <td>{{ transaction.desc }}</td>
-                    <td>{% if transaction.trans_type == "DR" %}{{ transaction.amount_total|replace("-", "") }}{% endif %}</td>
-                    <td>{% if transaction.trans_type == "CR" %}{{ transaction.amount_total|replace("-", "") }}{% endif %}</td>
-                    <td>{{ "%.2f"|format(transaction.amount_tax)|replace("-", "") }}</td>
-                    <td>{{ "%.2f"|format(transaction.amount_balance ) }}</td>
-                </tr>
-                {% if transaction.trans_nature_te %}
-                <!--
-                "desc": "BURKES CYCLES",
-                  "type": "DR",
-                  "amount": -10000,
-                  "source": "Bank Feed",
-                  "balance": 40920.16,
-                  "datetime": "2023-11-21T00:00:00",
-                  "bank_rule": {
-                    "Tax": "15%",
-                    "REGEX Payee": null,
-                    "Is Debit (DR)": "Y",
-                    "Is Credit (CR)": null,
-                    "REGEX Reference": null
-                  },
-                -->
-                <tr>
-                    <th scope="row"></th>
-                    <th scope="row"></th>
-                    <td>{{ transaction.trans_nature_te }}</td>
-                    <td>{{ transaction.desc_te }}</td>
-                    <td>{% if transaction.trans_type_te == "DR" %}{{ transaction.amount_total_te|replace("-", "") }}{% endif %}</td>
-                    <td>{% if transaction.trans_type_te == "CR" %}{{ transaction.amount_total_te|replace("-", "") }}{% endif %}</td>
-                    <td>{{ "%.2f"|format(transaction.amount_tax_te)|replace("-", "") }}</td>
-                    <td>{{ "%.2f"|format(transaction.amount_balance_te ) }}</td>
-                </tr>
-                {% endif %}
-                {% if transaction.bank_rule %}
-                <tr>
-                    <th></th>
-                    <th>
 
-                    </th>
-                    <td></td>
-                    <td><p>
-                          <small><strong>Estimated Bank Rule</strong></small>
-                            <br/>
-                            <code>
-                                <small>
-                                Rule: {{ transaction.bank_rule }}</small>
-                            </code>
-                        </p>
-                    </td>
-                    <td>
-                         {% if transaction.trans_nature_te %}
-                            {% if
-                                transaction.amount_total|replace("-", "") == transaction.amount_total_te|replace("-", "")
-                                and
-                                transaction.amount_tax|replace("-", "") == transaction.amount_tax_te|replace("-", "")
-                            %}
-                                <span class="badge bg-success">Matched</span>
-                            {% else %}
-                                <span class="badge bg-danger">Unmatched</span>
-                            {% endif %}
-                        {% else %}
-                             <span class="badge bg-secondary">Estimated</span>
-                        {% endif %}
+    {% for transaction in reconcile.transactions %}
+    <div class="row mb-4">
 
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+            <div class="col-6">
+                <div class="card">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Desc</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">{{ loop.index }}</th>
+                            <th scope="row">{{ transaction.datetime|format_datetime }}</th>
+                            <td>{{ transaction.type }}</td>
+                            <td>{{ transaction.desc }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
 
-                </tr>
-                {% endif %}
-            {% endfor %}
-            </tbody>
-        </table>
-    </ul>
 
+
+            <div class="col-6">
+
+                <div class="card">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Desc</th>
+                                <th scope="col">Tax</th>
+                                <th scope="col">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for transaction_line in transaction.lines %}
+
+
+                            <tr>
+                                <th scope="row">{{ loop.index }}</th>
+                                <td>{{ transaction_line.type }}</td>
+                                <td>{{ transaction_line.desc }}</td>
+                                <td>{{ "%.2f"|format(transaction_line.amount_tax)|replace("-", "") }}</td>
+                                <td>{{ "%.2f"|format(transaction_line.amount_total ) }}</td>
+                            </tr>
+
+
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+    </div>
+
+    {% endfor %}
 </div>
 {% endblock content %}
 
