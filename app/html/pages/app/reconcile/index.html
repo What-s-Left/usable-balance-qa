@@ -20,12 +20,18 @@
             <div class="col-6 pe-4">
 
                 <div class="card-body">
-                    <h3 class="card-title">{% if transaction.entity_ext %}{{ transaction.entity_ext.name }}{% else %}{{ transaction.desc }}{% endif %}</h3>
+                    <h3 class="card-title">{% if transaction.entity_ext %}{{ transaction.entity_ext.name }}{% else %}{{ transaction.src.desc.payee }}{% endif %}</h3>
                     <h6 class="card-subtitle mb-2 text-muted">Date: {{ transaction.datetime|format_datetime }}</h6>
-                    <p class="card-text">
-                        {{ transaction.transaction_ext.status }}
 
-                    </p>
+                    {% if transaction.transaction_ext.status == 'RECONCILED_UNMATCHED' %}
+                    <p class="card-text text-danger"><i class="bi bi-bookmark-fill"></i> Unmatched</p>
+                    {% elif transaction.transaction_ext.status == 'RECONCILED_MATCHED' %}
+                    <p class="card-text text-success"><i class="bi bi-bookmark-check-fill"></i> Matched</p>
+                    {% elif transaction.transaction_ext.status == 'RECONCILED_PENDING' %}
+                    <p class="card-text text-warning"><i class="bi bi-bookmarks-fill"></i> Pending</p>
+                    {% endif %}
+
+
                     <p>{{ transaction.desc }}</p>
                     <p><small><strong>Bank Transaction</strong>:<br/>{{ transaction.src.desc.payee }} / {{ transaction.src.desc.reference }} / {{ transaction.src.amount }}</small></p>
                 </div>
