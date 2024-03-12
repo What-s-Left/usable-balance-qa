@@ -14,67 +14,53 @@
 <div class="px-4 py-0 my-0">
 
     {% for transaction in reconcile.transactions %}
-    <div class="row mb-4">
+    <div class="card mb-4">
+        <div class="row g-0">
 
+            <div class="col-6 pe-4">
+
+                <div class="card-body">
+                    <h3 class="card-title">{% if transaction.entity_ext %}{{ transaction.entity_ext.name }}{% else %}{{ transaction.desc }}{% endif %}</h3>
+                    <h6 class="card-subtitle mb-2 text-muted">Date: {{ transaction.datetime|format_datetime }}</h6>
+                    <p class="card-text">
+                        {{ transaction.transaction_ext.status }}
+
+                    </p>
+                    <p>{{ transaction.desc }}</p>
+                    <p><small><strong>Bank Transaction</strong>:<br/>{{ transaction.src.desc.payee }} / {{ transaction.src.desc.reference }} / {{ transaction.src.amount }}</small></p>
+                </div>
+
+            </div>
             <div class="col-6">
-                <div class="card">
-                <table class="table">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Date</th>
                             <th scope="col">Type</th>
                             <th scope="col">Desc</th>
+                            <th scope="col">Tax</th>
+                            <th scope="col">Amount</th>
                         </tr>
                     </thead>
                     <tbody>
+                    {% for transaction_line in transaction.lines %}
+
+
                         <tr>
                             <th scope="row">{{ loop.index }}</th>
-                            <th scope="row">{{ transaction.datetime|format_datetime }}</th>
-                            <td>{{ transaction.type }}</td>
-                            <td>{{ transaction.desc }}</td>
+                            <td>{{ transaction_line.type }}</td>
+                            <td>{{ transaction_line.desc }}</td>
+                            <td>{{ "{:,.2f}".format(transaction_line.amount_tax|abs) }}</td>
+                            <td>{{ "{:,.2f}".format(transaction_line.amount_total) }}</td>
                         </tr>
+
+
+                    {% endfor %}
                     </tbody>
                 </table>
-                </div>
             </div>
-
-
-
-            <div class="col-6">
-
-                <div class="card">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Type</th>
-                                <th scope="col">Desc</th>
-                                <th scope="col">Tax</th>
-                                <th scope="col">Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for transaction_line in transaction.lines %}
-
-
-                            <tr>
-                                <th scope="row">{{ loop.index }}</th>
-                                <td>{{ transaction_line.type }}</td>
-                                <td>{{ transaction_line.desc }}</td>
-                                <td>{{ "%.2f"|format(transaction_line.amount_tax)|replace("-", "") }}</td>
-                                <td>{{ "%.2f"|format(transaction_line.amount_total ) }}</td>
-                            </tr>
-
-
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
+        </div>
     </div>
-
     {% endfor %}
 </div>
 {% endblock content %}
