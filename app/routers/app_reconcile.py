@@ -5,7 +5,7 @@ import json
 from fastapi import Depends, HTTPException, APIRouter, Request, Body, Response, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 
-from helpers.auth.funcs import get_current_user
+from helpers.auth.funcs import get_app_current_user
 from helpers.generic.templates import templates
 from helpers.app.api import request as api_request
 
@@ -21,7 +21,7 @@ router = APIRouter(
 async def reconcile_entity(
     request: Request,
     entity_id: str,
-    user: dict = Depends(get_current_user)
+    user: dict = Depends(get_app_current_user)
 ):
 
     # Get entity
