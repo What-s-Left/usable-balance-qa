@@ -4,7 +4,7 @@ from datetime import datetime
 from fastapi import Depends, HTTPException, APIRouter, Request, Body, Response, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 
-from helpers.app.auth import get_current_user
+from helpers.auth.funcs import get_current_user
 from helpers.generic.templates import templates
 from helpers.app.api import request as api_request
 

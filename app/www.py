@@ -20,7 +20,7 @@ from sentry_sdk.integrations.starlette import StarletteIntegration
 from sentry_sdk.integrations.fastapi import FastApiIntegration
 
 from app.routers import base, auth, app, app_reconcile
-from helpers.app.auth import AuthorizeRequestMiddleware
+from helpers.auth.qa import AuthorizeRequestMiddleware
 from helpers.app.error import error_response
 
 ENV_FILE = find_dotenv()
