@@ -5,16 +5,9 @@ import json
 from fastapi import Depends, HTTPException, APIRouter, Request, Body, Response, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 
-from xero_python.accounting import AccountingApi
-from xero_python.api_client import ApiClient, serialize
-from xero_python.api_client.configuration import Configuration
-from xero_python.api_client.oauth2 import OAuth2Token
-from xero_python.identity import IdentityApi
-
-from app.helpers import data
-from app.helpers.auth import get_current_user
-from app.helpers.templates import templates
-from app.helpers.api import request as api_request
+from helpers.app.auth import get_current_user
+from helpers.generic.templates import templates
+from helpers.app.api import request as api_request
 
 router = APIRouter(
     prefix="/app/reconcile",

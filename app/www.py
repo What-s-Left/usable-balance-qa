@@ -3,6 +3,7 @@ from json import JSONDecodeError
 
 from dotenv import find_dotenv, load_dotenv
 
+from helpers.generic.secrets import get_secret
 from .config import config
 from os import environ
 import os
@@ -19,17 +20,15 @@ from sentry_sdk.integrations.starlette import StarletteIntegration
 from sentry_sdk.integrations.fastapi import FastApiIntegration
 
 from app.routers import base, auth, app, app_reconcile
-from app.helpers.templates import templates
-from app.helpers.auth import AuthorizeRequestMiddleware
-from app.helpers.error import error_response
-from app.data.models import Session
+from helpers.app.auth import AuthorizeRequestMiddleware
+from helpers.app.error import error_response
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
 sentry_sdk.init(
-    dsn=os.getenv('SENTRY_DSN_FASTAPI'),
+    dsn=get_secret('SENTRY_DSN_FASTAPI'),
     integrations=[
         StarletteIntegration(transaction_style="url"),
         FastApiIntegration(transaction_style="url"),
@@ -61,7 +60,7 @@ def start_api():
     www.add_middleware(AuthorizeRequestMiddleware)
     www.add_middleware(
         SessionMiddleware,
-        secret_key=os.getenv("APP_SECRET_KEY"),
+        secret_key=get_secret("APP_SECRET_KEY"),
         #same_site="none",
         https_only=True
     )

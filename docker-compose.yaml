@@ -1,5 +1,5 @@
----
-version: '3'
+version: '3.7'
+
 x-www-common:
   &www-common
   # In order to add custom dependencies or upgrade provider packages you can use your extended image.
@@ -26,13 +26,15 @@ services:
     <<: *www-common
     command: python main.py
     ports:
-      - "7500:8080"
+      - "7600:8080"
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:5000/"]
       interval: 60s
       timeout: 90s
       retries: 5
     restart: unless-stopped
+    secrets:
+      - secrets
 
   app-cli:
     container_name: usable-balance-qa-app-cli
@@ -41,8 +43,14 @@ services:
     <<: *www-common
     command:
       - bash
+    secrets:
+      - secrets
 
 networks:
   usable-balance-qa:
     name: usable-balance
     external: true
+
+secrets:
+  secrets:
+    file: ./secrets.txt

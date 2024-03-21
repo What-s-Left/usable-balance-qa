@@ -4,7 +4,7 @@ from fastapi import Depends, HTTPException, APIRouter, Request, Body, Response, 
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.responses import JSONResponse
 
-from app.helpers.templates import templates
+from helpers.generic.templates import templates
 
 router = APIRouter(
     tags=["base"],
