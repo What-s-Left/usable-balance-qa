@@ -23,26 +23,7 @@ router = APIRouter(
 async def homepage(
     request: Request
 ):
-    if 'auth_access_token' in request.session:
-        return RedirectResponse("/app")
-
     response = templates.TemplateResponse("pages/index.html", {"request": request})
-    return response
-
-
-@router.get("/legal", response_class=HTMLResponse)
-async def legal(
-    request: Request
-):
-    response = templates.TemplateResponse("pages/legal.html", {"request": request})
-    return response
-
-
-@router.get("/about", response_class=HTMLResponse)
-async def about(
-    request: Request
-):
-    response = templates.TemplateResponse("pages/about.html", {"request": request})
     return response
 
 
