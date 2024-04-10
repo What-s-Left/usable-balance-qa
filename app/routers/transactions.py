@@ -4,40 +4,43 @@ import json
 
 from fastapi import Depends, HTTPException, APIRouter, Request, Body, Response, status
 from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi_sqlalchemy import db
 
 from helpers.auth.funcs import get_app_current_user, get_qa_current_user, get_qa_user_access
+from helpers.data import crud
 from helpers.generic.templates import templates
 from helpers.app.api import request as api_request
 
 router = APIRouter(
-    prefix="/app/reconcile",
-    tags=["app-reconcile"],
+    prefix="/app/transactions",
+    tags=["app-transactions"],
     dependencies=[],
     responses={404: {"description": "Not found"}},
 )
 
 
-@router.get("/{entity_id}", response_class=HTMLResponse)
+@router.get("/", response_class=HTMLResponse)
 async def reconcile_entity(
     request: Request,
-    entity_id: str,
+    page: int = 1,
+    per_page: int = 25,
+    search: str = None,
     user: dict = Depends(get_qa_current_user),
     access: bool = Depends(get_qa_user_access),
 ):
 
-    # Get entity
-    entity = api_request(url=f"/entities/{entity_id}")
-
-
     # Get entities associated to user
-    reconcile = api_request(url=f"/entities/{entity_id}/reconcile?transactions=true")
+    transactions = crud.transaction_get_all(
+        db=db.session
+    )
 
-    response = templates.TemplateResponse("pages/app/reconcile/index.html", {
+    response = templates.TemplateResponse("pages/app/transactions/index.html", {
         "request": request,
         "user": user,
-        "entity": entity,
-        "reconcile": reconcile
+        "transactions": transactions
     })
+
+    return response
 
     return response
 
