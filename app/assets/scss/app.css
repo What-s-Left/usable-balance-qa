@@ -9754,11 +9754,11 @@ mark, .mark {
   color: #8E00FD;
 }
 
-body > div.container:first-child {
+body > div:first-child {
   background-color: #8E00FD !important;
   color: #fff;
 }
-body > div.container:first-child a {
+body > div:first-child a {
   color: #fff;
   border-color: #fff;
 }
