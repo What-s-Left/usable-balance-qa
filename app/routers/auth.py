@@ -52,6 +52,33 @@ async def auth_login(
         return templates.TemplateResponse("pages/auth/login.html", {"request": request})
 
 
+@router.get("/login/xero", response_class=HTMLResponse)
+async def auth_login_xero(
+    request: Request,
+    state: Optional[str] = None,
+    redirect: Optional[str] = None,
+    timezone: Optional[str] = None,
+):
+    client = api.get_client()
+
+    if state is not None:
+        request.session["auth_state"] = state
+        request.session["auth_redirect"] = redirect
+        request.session["timezone"] = timezone
+        uri_redirect = api.login()
+        uri_authorisation = client.create_authorization_url(
+            url=f"https://{get_secret('AUTH0_DOMAIN')}{get_secret('AUTH0_ENDPOINT_AUTH')}",
+            redirect_uri=uri_redirect,
+            state=state,
+            scope=get_secret("AUTH0_SCOPE"),
+        )
+        uri_authorisation_full = uri_authorisation[0] + "&connection=Xero"
+        return RedirectResponse(uri_authorisation_full, status_code=302)
+    else:
+        # Get the client to set the state
+        return templates.TemplateResponse("pages/auth/login.html", {"request": request})
+
+
 @router.get("/callback", response_class=HTMLResponse)
 async def auth_callback(request: Request, code: str):
     state_from_session = request.session.get("auth_state")

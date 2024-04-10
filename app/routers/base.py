@@ -20,11 +20,12 @@ router = APIRouter(
 
 
 @router.get("/", response_class=HTMLResponse)
-async def homepage(
-    request: Request
-):
-    response = templates.TemplateResponse("pages/index.html", {"request": request})
-    return response
+async def homepage(request: Request):
+    if "auth_access_token" in request.session:
+        return RedirectResponse("/app")
+
+    else:
+        return RedirectResponse("/auth/login")
 
 
 @router.get("/.well-known/microsoft-identity-association.json", response_class=JSONResponse)
