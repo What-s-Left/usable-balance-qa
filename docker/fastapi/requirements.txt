@@ -6,10 +6,8 @@ sqlalchemy
 fastapi-sqlalchemy
 watchdog
 werkzeug
-auth0-python
 authlib
 httpx
-rauth
 uvicorn
 itsdangerous
 fiscalyear
@@ -18,7 +16,9 @@ sentry-sdk[fastapi]
 Jinja2
 requests-oauthlib
 requests
+rauth
 fastapi-sessions
 python-multipart
+xero-python
 pytz
 PyJWT
