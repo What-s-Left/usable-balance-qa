@@ -9895,6 +9895,10 @@ div .alert-danger a {
   border-bottom-right-radius: 0 !important;
 }
 
+input:invalid {
+  border-color: red;
+}
+
 .btn-qa-primary {
   --bs-btn-font-weight: 600;
   --bs-btn-color: var(--bs-white);

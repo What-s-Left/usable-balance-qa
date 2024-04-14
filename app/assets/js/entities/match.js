@@ -25,7 +25,7 @@ class EntitiesMatch {
                 // Make the AJAX GET request using Fetch
                 fetch(url)
                   .then(response => response.text())
-                  .then(data => {
+                  .then(async data => {
                     // Handle the response data
                     output_e.innerHTML = data;
                   })
@@ -58,16 +58,86 @@ class EntitiesMatch {
                 fetch(url)
                   .then(response => response.text())
                   .then(data => {
-                    // Handle the response data
-                    output_e.innerHTML = data;
+                      // Handle the response data
+                      output_e.innerHTML = data;
+                      setTimeout(() => {
+                          EntitiesMatch.setup_entity_result_listeners()
+                      }, 100);
                   })
                   .catch(error => {
                     // Handle any errors
                     console.error('Error:', error);
-                  });
+                  })
 
             });
         }
+
+
+    }
+
+    static async setup_entity_result_listeners(){
+
+        const entity_match_results = document.querySelectorAll('.entity-transaction-match');
+
+        const payee_e = document.getElementById('entity_identifier_payee');
+        const reference_e = document.getElementById('entity_identifier_reference');
+        const code_e = document.getElementById('entity_identifier_code');
+
+        // Get the values from the input fields
+        const payee = payee_e.value;
+        const reference = reference_e.value;
+        const code = code_e.value;
+
+        entity_match_results.forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault(); // Prevent the default link action
+
+                // Get the data attributes from the clicked link
+                const entity_id = event.target.dataset.entityId
+
+                return EntitiesMatch.entity_match_payee(event.target, entity_id, payee)
+            });
+        });
+
+    }
+
+    static async entity_match_payee(element, entity_id, payee){
+
+        const data = {
+            "identifier": [
+                {
+                    "type": "BANK:PAYEE",
+                    "value": payee
+                }
+            ]
+        };
+
+        fetch('/app/entities/' + entity_id, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data) // Convert the JavaScript object to a JSON string
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            element.innerHTML = "<i class=\"bi bi-check-circle-fill\"></i> Matched Transaction(s)"
+            element.classList.remove('btn-primary')
+            element.classList.add('btn-success')
+            element.classList.add('disabled')
+            element.disabled = true
+        })
+        .then(data => {
+            return true;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            return false;
+        });
+
+
     }
 
 }
