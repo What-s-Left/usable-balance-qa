@@ -21,7 +21,7 @@ import sentry_sdk
 from sentry_sdk.integrations.starlette import StarletteIntegration
 from sentry_sdk.integrations.fastapi import FastApiIntegration
 
-from app.routers import base, auth, app, transactions
+from app.routers import base, auth, app, transactions, rules, entities
 from helpers.auth.qa import AuthorizeRequestMiddleware
 from helpers.app.error import error_response
 
@@ -46,6 +46,8 @@ def include_router(www):
     www.include_router(auth.router)
     www.include_router(app.router)
     www.include_router(transactions.router)
+    www.include_router(rules.router)
+    www.include_router(entities.router)
 
 
 def mount_static(www):

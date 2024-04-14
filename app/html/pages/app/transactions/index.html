@@ -49,19 +49,19 @@
                 {% endfor %}
 
 
-                   <p>{{ transaction.rule.desc }}</p>
+                   <p>{{ transaction.match_rule.desc }}</p>
 
             </div>
             <div class="col-sm-4 border-top pb-0 p-3 pe-5 ps-5 resize-text">
 
-                    {% if transaction.entity_ext %}
-                        {% if transaction.entity_ext.name|lower != transaction.entity_ext.name_legal|lower %}
-                            <h2>{{ transaction.entity_ext.name }}</h2>
-                            <h5>{{ transaction.entity_ext.name_legal }}</h5>
+                    {% if transaction.match_entity %}
+                        {% if transaction.match_entity.name|lower != transaction.match_entity.name_legal|lower %}
+                            <h2>{{ transaction.match_entity.name }}</h2>
+                            <h5>{{ transaction.match_entity.name_legal }}</h5>
                         {% else %}
-                            <h2>{{ transaction.entity_ext.name }}</h2>
+                            <h2>{{ transaction.match_entity.name }}</h2>
                         {% endif %}
-                        {% for identifier in transaction.entity_ext.identifier %}
+                        {% for identifier in transaction.match_entity.identifier %}
                             {% if identifier.type == 'GS1' %}
                             <h5><a href="https://www.nzbn.govt.nz/mynzbn/nzbndetails/{{ identifier.value }}" target="_blank">NZBN: {{identifier.value}}</a></h5>
                             {% endif %}
@@ -72,7 +72,7 @@
 
 
 
-                {% if transaction.transaction_ext.status == 'RECONCILED_PENDING' %}
+                {% if transaction.feed.status == 'RECONCILED_PENDING' %}
                 <p class="card-text text-warning"><i class="bi bi-slash-circle-fill"></i> We need more information about this transaction as you've spent over $1,000.</p>
                 {% endif %}
 
@@ -95,9 +95,9 @@
                             <div class="col-sm-8">
                                 <h4>{{ transaction_line.account.name }}</h4>
                                 {% if transaction_line.account.code.startswith('E-') %}
-                                    <p><small>{% if "entity_ext" in transaction %}{{ transaction.entity_ext.desc }}{% else %}{{ transaction_line.account.desc }}{% endif %}</small></p>
+                                <p><small>{% if "match_entity" in transaction %}{{ transaction.match_entity.desc }}{% else %}{{ transaction_line.account.desc }}{% endif %}</small></p>
                                 {% else %}
-                                    <p><small>{{ transaction_line.account.desc }}</small></p>
+                                <p><small>{{ transaction_line.account.desc }}</small></p>
 
                                 {% endif %}
                             </div>
@@ -118,15 +118,15 @@
             <div class="col-sm-4 border-bottom ps-3 text-center">
                 <p>
                     {% if transaction.metrics.match['items'].entity %}
-                    <a href="/app/rules/entity/{{ transaction.entity_ext.id }}?transaction_id={{ transaction.id }}" class="btn btn-primary btn-sm px-4 gap-3 rounded-pill"><i class="bi bi-check-circle-fill"></i> Entity</a>
+                    <a href="/app/entities/{{ transaction.match_entity.id }}?transaction_id={{ transaction.id }}" class="btn btn-primary btn-sm px-4 gap-3 rounded-pill"><i class="bi bi-check-circle-fill"></i> Entity</a>
                     {% else %}
-                    <a href="/app/rules/entity/new?payee={{ transaction.src.desc.payee }}&reference={{ transaction.src.desc.reference }}&code={{ transaction.src.desc.code }}&transaction_id={{ transaction.id }}" class="btn btn-secondary btn-sm px-4 gap-3 rounded-pill"><i class="bi bi-x-circle-fill"></i> Entity</a>
+                    <a href="/app/entities/match?payee={{ transaction.src.desc.payee }}&reference={{ transaction.src.desc.reference }}&code={{ transaction.src.desc.code }}&transaction_id={{ transaction.id }}" class="btn btn-secondary btn-sm px-4 gap-3 rounded-pill"><i class="bi bi-x-circle-fill"></i> Entity</a>
                     {% endif %}
 
-                    {% if transaction.metrics.match['items'].bank_rule %}
-                    <a href="/app/rules/bank/{{ transaction.rule.id }}?transaction_id={{ transaction.id }}" class="btn btn-primary btn-sm px-4 gap-3 rounded-pill"><i class="bi bi-check-circle-fill"></i> Bank Rule</a>
+                    {% if "BASE" not in transaction.match_rule.id_src %}
+                    <a href="/app/rules/{{ transaction.match_rule.id }}?transaction_id={{ transaction.id }}" class="btn btn-primary btn-sm px-4 gap-3 rounded-pill"><i class="bi bi-check-circle-fill"></i> Bank Rule</a>
                     {% else %}
-                    <a href="/app/rules/bank/new?payee={{ transaction.src.desc.payee }}&reference={{ transaction.src.desc.reference }}&code={{ transaction.src.desc.code }}&transaction_id={{ transaction.id }}" class="btn btn-secondary btn-sm px-4 gap-3 rounded-pill"><i class="bi bi-x-circle-fill"></i> Bank Rule</a>
+                    <a href="/app/rules/match?payee={{ transaction.src.desc.payee }}&reference={{ transaction.src.desc.reference }}&code={{ transaction.src.desc.code }}&transaction_id={{ transaction.id }}" class="btn btn-secondary btn-sm px-4 gap-3 rounded-pill"><i class="bi bi-x-circle-fill"></i> Bank Rule</a>
                     {% endif %}
                 </p>
             </div>

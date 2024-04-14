@@ -1,0 +1,23 @@
+<td class="row">
+    <h3>Matched Transactions</h3>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Payee</th>
+            <th scope="col">Amount</th>
+        </tr>
+        </thead>
+    {% for transaction in feed.transactions %}
+
+    <tbody>
+        <tr>
+            <td>{{ transaction.datetime|format_datetime("%-d %b %Y") }}</td>
+            <td>{{ transaction.desc.payee }}</td>
+            <td>{{ "-$" if transaction.amount < 0 else "$" }}{{ "{:,.2f}".format(transaction.amount|abs) }}</td>
+        </tr>
+    </tbody>
+
+    {% endfor %}
+    </table>
+</div>

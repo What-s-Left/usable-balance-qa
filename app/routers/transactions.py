@@ -42,7 +42,5 @@ async def reconcile_entity(
 
     return response
 
-    return response
-
 
 
