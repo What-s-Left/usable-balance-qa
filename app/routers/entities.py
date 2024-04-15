@@ -150,7 +150,11 @@ async def entities_new(
         "transaction_payee": transaction_payee,
         "transaction_reference": transaction_reference,
         "transaction_code": transaction_code,
-        "countries": countries
+        "countries": countries,
+        "classifications": {
+            "expense": crud.account_get_all(db=db.session, classification="EXPENSE"),
+            "revenue": crud.account_get_all(db=db.session, classification="REVENUE"),
+        }
     })
 
     return response
