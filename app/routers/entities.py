@@ -64,7 +64,7 @@ async def entity_match_feed(
         }
     )
 
-    response = templates.TemplateResponse("partials/app/entities/match/feed.html", {
+    response = templates.TemplateResponse("partials/app/entities/match/search/feed.html", {
         "request": request,
         "user": user,
         "feed": feed
@@ -88,7 +88,31 @@ async def entity_match_entity(
         }
     )
 
-    response = templates.TemplateResponse("partials/app/entities/match/entity.html", {
+    response = templates.TemplateResponse("partials/app/entities/match/search/entity.html", {
+        "request": request,
+        "user": user,
+        "entities": entities
+    })
+
+    return response
+
+
+@router.get("/match/ext-entity", response_class=HTMLResponse)
+async def ext_entity_match_entity(
+    request: Request,
+    user: dict = Depends(get_qa_current_user),
+    access: bool = Depends(get_qa_user_access),
+):
+
+    # Get entities associated to user
+    entities = crud.ext_entity_get_all(
+        db=db.session,
+        search={
+            'name': request.query_params.get('name'),
+        }
+    )
+
+    response = templates.TemplateResponse("partials/app/entities/match/search/ext-entity.html", {
         "request": request,
         "user": user,
         "entities": entities

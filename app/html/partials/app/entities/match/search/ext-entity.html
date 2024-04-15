@@ -1,0 +1,56 @@
+<div class="row mt-3">
+    <h3>Matched External Entities</h3>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <!-- <th scope="col">Source</th> -->
+            <th scope="col">Name (Trading)</th>
+            <th scope="col">Name (Legal)</th>
+            <th></th>
+        </tr>
+        </thead>
+    {% for entity in entities.entities %}
+
+    <tbody>
+        <tr>
+            <!-- <td>{{ entity.source }}</td> -->
+            <td>{{ entity.name|join(", ") }}</td>
+            <td>{{ entity.name_legal }}</td>
+            <td>
+                <a
+                    href="#"
+                    class="btn btn-primary btn-sm px-4 gap-3 rounded-pill ext-entity-transaction-match"
+                    data-entity-id="{{ entity.id }}"
+                    {% for identifier in entity.identifier %}
+                        {% if identifier.type == 'GS1' %}
+                            data-entity-identifier-nzbn="{{ identifier.value }}"
+                        {% elif identifier.type == 'NZ:GST' %}
+                            data-entity-identifier-nzgst="{{ identifier.value }}"
+                        {% elif identifier.type == 'IRD' %}
+                            data-entity-identifier-ird="{{ identifier.value }}"
+                        {% endif %}
+                    {% endfor %}
+                    data-entity-name='{{ entity.name | tojson | safe }}'
+                    data-entity-name-legal='{{ entity.name_legal }}'
+                    data-entity-identifier='{{ entity.identifier | tojson | safe }}'
+                    {% for contact in entity.contact %}
+                        {% if contact.type == 'POSTCODE' %}
+                            data-entity-contact-postcode="{{ contact.value }}"
+                        {% elif contact.type == 'COUNTRY' %}
+                            data-entity-contact-country="{{ contact.value }}"
+                        {% elif contact.type == 'IRD' %}
+                            data-entity-ird="{{ contact.value }}"
+                        {% endif %}
+                    {% endfor %}
+                    data-entity-contact='{{ entity.contact | tojson | safe }}'
+                    data-entity-classification='{{ entity.classification | tojson | safe }}'
+                    data-entity-country='{{ entity.country }}'
+                ><i class="bi bi-clipboard-plus-fill"></i> Copy</a>
+
+            </td>
+        </tr>
+    </tbody>
+
+    {% endfor %}
+    </table>
+</div>
