@@ -114,6 +114,17 @@
 
                 <div class="row mb-3">
                     <div class="col">
+                        <label for="entity_contact_address" class="form-label">Address</label>
+                        <input type="text" id="entity_contact_address" name="entity[contact][address]" class="form-control" placeholder="12, Gosh Street, Town" aria-label="Address">
+                    </div>
+                    <div class="col">
+                        <label for="entity_contact_postcode" class="form-label">Postcode</label>
+                        <input type="text" id="entity_contact_postcode" name="entity[contact][postcode]" pattern="^https?://.*" class="form-control" placeholder="123446" aria-label="Postcode">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col">
                         <label for="entity_contact_email" class="form-label">Email Address</label>
                         <input type="text" id="entity_contact_email" name="entity[contact][email]" class="form-control" placeholder="hello@acme.com" aria-label="Email Address">
                     </div>

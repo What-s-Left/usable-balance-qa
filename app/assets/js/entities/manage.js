@@ -11,18 +11,24 @@ class EntitiesManage {
                 event.preventDefault();
 
                 const name = document.getElementById('entity_name')
+                const name_json = JSON.stringify(document.getElementById('json_entity_name'))
+
+                const entity_name = [...name_json, name.value]
+
+                const identifier_json = JSON.stringify(document.getElementById('json_entity_identifier'))
+
                 const name_legal = document.getElementById('entity_name_legal')
 
                 const data= {
-                    "name": (name && name.value && name.value.trim() !== '') ? name.value : null,
+                    "name": entity_name,
                     "name_legal": (name_legal && name_legal.value && name_legal.value.trim() !== '') ? name_legal.value : null,
                     "desc": document.getElementById('entity_desc').value,
                     "country": document.getElementById('entity_country').value,
                     "identifier": [
-                        {
+                        /*{
                             "type": "BANK:PAYEE",
                             "value": document.getElementById('entity_identifier_payee').value
-                        }
+                        }*/
                     ]
                 };
 
