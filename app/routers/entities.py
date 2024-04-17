@@ -11,7 +11,7 @@ from fastapi.responses import JSONResponse
 from helpers.ai.openai import wait_on_run
 from helpers.auth.funcs import get_app_current_user, get_qa_current_user, get_qa_user_access
 from helpers.data import crud, models, schemas
-from helpers.generic.countries import countries
+from helpers.generic.addresses import countries
 from helpers.generic.data import get_value_from_key
 from helpers.generic.secrets import get_secret
 from helpers.generic.templates import templates
