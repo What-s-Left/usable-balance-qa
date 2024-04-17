@@ -4,9 +4,9 @@
         <thead>
         <tr>
             <!-- <th scope="col">Source</th> -->
-            <th scope="col">Name (Trading)</th>
-            <th scope="col">Name (Legal)</th>
-            <th></th>
+            <th scope="col" style="width: 25%;">Trading Name(s)</th>
+            <th scope="col" style="width: 65%;">Entity</th>
+            <th style="width: 10%;"></th>
         </tr>
         </thead>
     {% for entity in entities.entities %}
@@ -15,40 +15,42 @@
         <tr>
             <!-- <td>{{ entity.source }}</td> -->
             <td>{{ entity.name|join(", ") }}</td>
-            <td>{{ entity.name_legal }}</td>
+            <td><p class="mb-0">{{ entity.name_legal }}</p>
+                {% if (entity.classification|get_value_from_key('BIC', True)).desc %}
+                <p class="mb-0"><em>{{ (entity.classification|get_value_from_key('BIC', True)).desc }}</em></p>
+                {% endif %}
+                <p class="mb-0">{{ entity.contact|get_value_from_key('ADDRESS') }}, {{ entity.contact|get_value_from_key('POSTCODE') }}</p>
+            </td>
             <td>
+                {% if entity.entity_matched %}
+                <a
+                    href="/app/entities/{{ entity.id }}"
+                    class="btn btn-secondary btn-sm px-4 gap-3 rounded-pill"
+                    ><i class="bi bi-pencil-fill"></i> Entity Exists</a>
+                {% else %}
                 <a
                     href="#"
                     class="btn btn-primary btn-sm px-4 gap-3 rounded-pill ext-entity-transaction-match"
                     data-entity-id="{{ entity.id }}"
-                    {% for identifier in entity.identifier %}
-                        {% if identifier.type == 'GS1' %}
-                            data-entity-identifier-nzbn="{{ identifier.value }}"
-                        {% elif identifier.type == 'NZ:GST' %}
-                            data-entity-identifier-nzgst="{{ identifier.value }}"
-                        {% elif identifier.type == 'IRD' %}
-                            data-entity-identifier-ird="{{ identifier.value }}"
-                        {% endif %}
-                    {% endfor %}
+                    data-entity-identifier-nzbn="{{ entity.identifier|get_value_from_key('GS1') }}"
+                    data-entity-identifier-nzgst="{{ entity.identifier|get_value_from_key('NZ:GST') }}"
+                    data-entity-identifier-ird="{{ entity.identifier|get_value_from_key('IRD') }}"
                     data-entity-name='{{ entity.name | tojson | safe }}'
                     data-entity-name-legal='{{ entity.name_legal }}'
                     data-entity-identifier='{{ entity.identifier | tojson | safe }}'
-                    {% for contact in entity.contact %}
-                        {% if contact.type == 'POSTCODE' %}
-                            data-entity-contact-postcode="{{ contact.value }}"
-                        {% elif contact.type == 'COUNTRY' %}
-                            data-entity-contact-country="{{ contact.value }}"
-                        {% elif contact.type == 'IRD' %}
-                            data-entity-ird="{{ contact.value }}"
-                        {% endif %}
-                    {% endfor %}
+                    data-entity-contact-postcode="{{ entity.contact|get_value_from_key('POSTCODE') }}"
+                    data-entity-contact-country="{{ entity.contact|get_value_from_key('COUNTRY') }}"
+                    data-entity-contact-website="{{ entity.contact|get_value_from_key('WEBSITE') }}"
                     data-entity-contact='{{ entity.contact | tojson | safe }}'
                     data-entity-classification='{{ entity.classification | tojson | safe }}'
+                    data-entity-classification-bic-code="{{ entity.classification|get_value_from_key('BIC') }}"
+                    data-entity-classification-bic-desc="{{ (entity.classification|get_value_from_key('BIC', True)).desc }}"
                     data-entity-country='{{ entity.country }}'
                 ><i class="bi bi-clipboard-plus-fill"></i> Copy</a>
-
+                {% endif %}
             </td>
         </tr>
+
     </tbody>
 
     {% endfor %}

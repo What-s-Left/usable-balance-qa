@@ -141,7 +141,15 @@ class EntitiesMatch {
 
         const name_e = document.getElementById('entity_name');
         const name_legal_e = document.getElementById('entity_name_legal');
-        const nzbn_e = document.getElementById('entity_identifier_nzbn');
+        const identifier_nzbn_e = document.getElementById('entity_identifier_nzbn');
+        const identifier_ird_e = document.getElementById('entity_identifier_ird');
+        const desc_e = document.getElementById('entity_desc');
+        const contact_website_e = document.getElementById('entity_contact_website');
+
+        const json_name_e = document.getElementById('json_entity_name');
+        const json_identifier_e = document.getElementById('json_entity_identifier');
+        const json_classification_e = document.getElementById('json_entity_classification');
+        const json_contact_e = document.getElementById('json_entity_contact');
 
         ext_entity_match_results.forEach(link => {
             link.addEventListener('click', event => {
@@ -149,13 +157,21 @@ class EntitiesMatch {
 
                 // Get the data attributes from the clicked link
                 const entity_id = event.target.dataset.entityId
+                const entity_name = event.target.dataset.entityName
                 const entity_data = event.target.dataset
 
-                console.log(entity_data)
+                json_name_e.value = entity_data.entityName
+                json_identifier_e.value = entity_data.entityIdentifier
+                json_classification_e.value = entity_data.entityClassification
+                json_contact_e.value = entity_data.entityContact
 
                 name_e.value = JSON.parse(entity_data.entityName).join(", ")
                 name_legal_e.value = entity_data.entityNameLegal
-                nzbn_e.value = entity_data.entityNzbn
+                identifier_nzbn_e.value = entity_data.entityIdentifierNzbn
+                identifier_ird_e.value = entity_data.entityIdentifierIrd
+                identifier_ird_e.value = entity_data.entityIdentifierIrd
+                desc_e.value = entity_data.entityClassificationBicDesc
+                contact_website_e.value = entity_data.entityContactWebsite
                 //return EntitiesMatch.entity_match_payee(event.target, entity_id, payee)
             });
         });

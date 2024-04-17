@@ -8,9 +8,12 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi_sqlalchemy import db
 from fastapi.responses import JSONResponse
 
+from helpers.ai.openai import wait_on_run
 from helpers.auth.funcs import get_app_current_user, get_qa_current_user, get_qa_user_access
 from helpers.data import crud, models, schemas
 from helpers.generic.countries import countries
+from helpers.generic.data import get_value_from_key
+from helpers.generic.secrets import get_secret
 from helpers.generic.templates import templates
 from helpers.generic import data as data_helper
 from helpers.app.api import request as api_request
@@ -116,6 +119,61 @@ async def ext_entity_match_entity(
         "request": request,
         "user": user,
         "entities": entities
+    })
+
+    return response
+
+@router.get("/match/ai", response_class=HTMLResponse)
+async def ext_entity_match_entity_ai(
+    request: Request,
+    ext_entity_id: str,
+    user: dict = Depends(get_qa_current_user),
+    access: bool = Depends(get_qa_user_access),
+):
+
+    ext_entity = crud.ext_entity_get(db=db.session, ext_entity_id=ext_entity_id)
+
+    from openai import OpenAI
+
+    # Get entities associated to user
+
+    client = OpenAI(api_key=get_secret("OPENAI_KEY"))
+
+    thread = client.beta.threads.create()
+
+    prompt_user = f"""
+    
+    Trading Names (if any): {", ".join(ext_entity.name)}
+    
+    Legal Name: {ext_entity.name_legal}
+    
+    Industry Description: {get_value_from_key(ext_entity.classification, "BIC", True)['desc']}
+    
+    Address: {get_value_from_key(ext_entity.identifier, "ADDRESS")} , { get_value_from_key(ext_entity.identifier, "POSTCODE")} 
+    
+    """
+
+    message = client.beta.threads.messages.create(
+        thread_id=thread.id,
+        role="user",
+        content=prompt_user,
+    )
+
+    run = client.beta.threads.runs.create(
+        thread_id=thread.id,
+        assistant_id=get_secret("OPENAI_ENTITY_ASSISTANT_ID"),
+    )
+
+    # Async call, so need to wait for it to finish
+    result = wait_on_run(client, run, thread)
+
+    messages = client.beta.threads.messages.list(thread_id=thread.id)
+
+    response = templates.TemplateResponse("partials/app/entities/match/search/ai-entity.html", {
+        "request": request,
+        "user": user,
+        "ext_entity": ext_entity,
+        "ai_entity": messages
     })
 
     return response
