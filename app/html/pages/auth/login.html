@@ -18,9 +18,9 @@
 {% block javascript %}
 <script type="text/javascript">
     window.onload = function () {
-        params = parse_query_string()
+        const params = new URLSearchParams(window.location.search);
 
-        if (!params.state) {
+        if (!params.get('state')) {
             // Create unique state to send with login
             state_unique = random_string(20)
             redirect_url = "{{ env['UB_APP_BASE'] }}"
