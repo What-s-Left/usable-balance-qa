@@ -22,3 +22,4 @@ app/assets/.DS_Store
 
 app/data/__pycache__/
 >>>>>>> master
+helpers/
