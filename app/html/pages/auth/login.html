@@ -20,9 +20,19 @@
     window.onload = function () {
         const params = new URLSearchParams(window.location.search);
 
+        function generateRandomString(length) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            const charactersLength = characters.length;
+            for (let i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            return result;
+        }
+
         if (!params.get('state')) {
             // Create unique state to send with login
-            state_unique = random_string(20)
+            state_unique = generateRandomString(20)
             redirect_url = "{{ env['UB_APP_BASE'] }}"
             sessionStorage.setItem('auth_state', state_unique)
             sessionStorage.setItem('auth_redirect', redirect_url)
