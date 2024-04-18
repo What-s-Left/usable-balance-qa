@@ -18,7 +18,14 @@
 {% block javascript %}
 <script type="text/javascript">
     window.onload = function () {
-        location.href = sessionStorage.getItem('auth_redirect')
+        redirect_url = sessionStorage.getItem('app_redirect')
+        if (redirect_url) {
+            location.href = redirect_url
+        }
+        else
+        {
+            location.href = '/app'
+        }
     }
 </script>
 

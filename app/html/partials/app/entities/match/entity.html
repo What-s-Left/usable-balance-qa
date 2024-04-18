@@ -1,0 +1,24 @@
+<h4 class="pb-2">Search Entities</h4>
+
+<div class="row g-0 pt-2 border-top">
+    <div class="col-12 mb-3 ps-0">
+        <label class="form-label" for="entity_name">Company Legal Name</label>
+        <input type="entity[name_legal]" class="form-control" placeholder="Acme Co Limited" id="entity_name" aria-describedby="entity_name_legal_help" value="{% if entity %}{{ entity.name_legal }}{% endif %}">
+        <div id="entity_name_legal_help" class="form-text form-control-sm ps-0">The name found in either trading or legal name(s).</div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-6">
+        <p>
+            <a href="#" id="entities-search" class="btn btn-primary btn-sm px-4 gap-3 rounded-pill"><i class="bi bi-search"></i> Search Entities</a>
+        </p>
+    </div>
+    <div class="col-6 text-end">
+        <p>
+            <a href="/app/entities/new?payee={{ transaction_payee }}&reference={{ transaction_reference }}&code={{ transaction_code }}&transaction_id={{ transaction.id }}" class="btn btn-secondary btn-sm px-4 gap-3 rounded-pill">Create Entity</a>
+        </p>
+
+    </div>
+    <div id="entities-match-results"></div>
+</div>

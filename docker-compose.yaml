@@ -1,48 +1,58 @@
----
-version: '3'
-x-www-common:
-  &www-common
+version: '3.7'
+
+x-app-common:
+  &app-common
   # In order to add custom dependencies or upgrade provider packages you can use your extended image.
   # Comment the image line, place your Dockerfile in the directory where you placed the docker-compose.yaml
   # and uncomment the "build" line below, Then run `docker-compose build` to build the images.
-    image: usable-balance/fastapi-www
+    image: usable-balance/fastapi-app
     build:
       context: ./
       dockerfile: ./docker/fastapi/Dockerfile
     environment:
       &api-common-env
-      SENTRY_DSN: "https://d1563f5025754950b5b20058f4a07ea5@o1114063.ingest.sentry.io/6609797"
+      SENTRY_DSN: "https://c78bb330c77372822834a4da5e86d4ea@o4504176113418240.ingest.us.sentry.io/4507064649383936"
     volumes:
       - ./:/opt/src
     user: "${APP_UID:-50000}:0"
     networks:
-      - usable-balance-qa
+      - usable-balance-app
+    secrets:
+      - secrets
 
 services:
   app-webserver:
     container_name: usable-balance-qa-app-webserver
-    hostname: www-app
+    hostname: qa-app
     tty: true
-    <<: *www-common
+    <<: *app-common
     command: python main.py
     ports:
-      - "7500:8080"
+      - "7600:8080"
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:5000/"]
       interval: 60s
       timeout: 90s
       retries: 5
     restart: unless-stopped
+    secrets:
+      - secrets
 
   app-cli:
-    container_name: usable-balance-qa-app-cli
-    hostname: www-cli
+    container_name: usable-balance-app-app-cli
+    hostname: app-cli
     tty: true
-    <<: *www-common
+    <<: *app-common
     command:
       - bash
+    secrets:
+      - secrets
 
 networks:
-  usable-balance-qa:
+  usable-balance-app:
     name: usable-balance
     external: true
+
+secrets:
+  secrets:
+    file: ./secrets.txt

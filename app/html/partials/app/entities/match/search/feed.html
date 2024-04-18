@@ -1,0 +1,25 @@
+<div class="row  mt-3">
+    <h3>Matched Transactions</h3>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col" style="width: 15%">Date</th>
+            <th scope="col" style="width: 50%">Payee</th>
+            <th scope="col" style="width: 25%">Amount</th>
+            <th scope="col" style="width: 10%">Matched</th>
+        </tr>
+        </thead>
+    {% for transaction in feed.transactions %}
+
+    <tbody>
+        <tr>
+            <td>{{ transaction.datetime|format_datetime("%-d %b %Y") }}</td>
+            <td>{{ transaction.desc.payee }}</td>
+            <td>{{ "-$" if transaction.amount < 0 else "$" }}{{ "{:,.2f}".format(transaction.amount|abs) }}</td>
+            <td>{% if transaction.status == "RECONCILED_MATCHED" %}<div class="btn btn-success disabled rounded-pill">Y</div>{% else %}<div class="btn disabled btn-danger rounded-pill">N</div>{% endif %}</td>
+        </tr>
+    </tbody>
+
+    {% endfor %}
+    </table>
+</div>

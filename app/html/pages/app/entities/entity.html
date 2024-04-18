@@ -1,0 +1,188 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}GST Returns{% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="px-4 py-4 my-4 col-12 ">
+    <div class="col-sm-10 col-md-10 col-lg-8 mx-auto">
+        <div class="container entity-detail text-center">
+            <div class="row g-0">
+                <div class="col col-12">
+                    <div class="resize-text">
+                        <h2>{% if entity %}Update {{ entity. name }}{% else %}Create Entity{% endif %}<em>.</em></h2>
+                    </div>
+
+
+                    <div class="col-lg-12 mx-auto pt-4 pb-0">
+                        <a href="javascript:history.go(-1)" class="btn btn-primary px-4 gap-3 rounded-pill">Back to Previous Page</a>
+                        <!-- <a href="/app/connection/myob" class="btn btn-lg btn-outline-primary px-4 gap-3">Connect another organisation via
+                            MYOB</a> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form id="entity-form">
+        <div class="row">
+            <div class="col-sm-6 border-end"></div>
+            <div class="col-sm-6">&nbsp;</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 border rounded-top-5 border-bottom-0 border-end-1 p-5 unrounded-top-right resize-text">
+
+                {% include 'partials/app/entities/match/ext-entity.html' %}
+
+            </div>
+            <div class="col-sm-6 border rounded-top-5 border-bottom-0 border-start-0 p-5 unrounded-top-left bg-body-secondary">
+
+                <h4 class="pb-2 text-primary">Details</h4>
+
+                <div class="mb-3 ps-0">
+                    <label for="entity_name" class="form-label">Entity Name (Legal)</label>
+                    <input type="text" class="form-control" id="entity_name" placeholder="Acme Co" required aria-describedby="entity_name_help" value="{% if entity %}{{ entity.name }}{% endif %}">
+
+                    <div id="entity_name_help" class="form-text form-control-sm ps-0">The name that would be on legal documents.</div>
+                </div>
+
+                <div class="mb-3 ps-0">
+
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-4">
+                        <label for="entity_identifier_tradingname" class="form-label">Entity Name (Also Known As)</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Acme Co Limited" aria-label="Acme Co Limited" id="entity_identifier_tradingname" aria-describedby="button-addon2">
+                            <button class="btn btn-primary" type="button" id="entity_identifier_tradingname-add">Add</button>
+                        </div>
+                         <div id="entity_identifier_tradingname_help" class="form-text form-control-sm ps-0">What the organisation is often known as.</div>
+
+                    </div>
+                    <div class="col-8">
+                        <label for="entity_identifier_tradingname" class="form-label">.</label>
+                        <button type="button" id="entity_identifier_tradingname_value" class="btn mb-2 me-1 rounded-pill btn-outline-primary visually-hidden">Trading Name <i class="bi bi-x-circle-fill"></i></button>
+                        <div id="entity_identifier_tradingname_values">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="entity_identifier_nzbn" class="form-label">NZBN (if in NZ) <small><a href="https://www.nzbn.govt.nz/mynzbn/search/" target="_blank">Search</a></small></label>
+                        <input type="text" class="form-control" id="entity_identifier_nzbn" aria-describedby="entity_identifier_nzbn_help" placeholder="94xxxxxxxxxxx"  pattern="^94\d{11}$" value="{% if entity %}{{ entity.identifier.nzbn }}{% endif %}">
+                    </div>
+                    <div class="col">
+                        <label for="entity_identifier_ird" class="form-label">IRD/GST Number (if NZ based)</label>
+                        <input type="text" class="form-control" placeholder="000-000-000" id="entity_identifier_ird" aria-describedby="entity_desc_help" value="{% if entity %}{{ entity.identifier.ird }}{% endif %}">
+                        <div id="entity_identifier_ird_help" class="form-text">IRD/GST number in 000-000-000 format.</div>
+                    </div>
+                    <div class="col">
+                        <label for="entity_classification_gst_registered" class="form-label">Registered for GST in NZ</label>
+                        <select name="entity[classification][gst_registered]" id="entity_classification_gst_registered" class="form-select">
+                            <option value="Y">Yes</option>
+                            <option value="N">No</option>
+                        </select>
+                        <div id="entity_gst_registered_help" class="form-text">Is this company registered for GST in NZ?</div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="entity_classification_expense" class="form-label">Default Classification: Expense</label>
+                        <select name="entity[classification][expense]" id="entity_classification_expense" required aria-describedby="entity_classification_expense_help" class="form-select">
+                            <option value="">- Expense -</option>
+                            {% for account in classifications.expense %}
+                                <option value="{{ account.code }}">{{ account.code }}: {{ account.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="entity_classification_revenue" class="form-label">Default Classification: Revenue</label>
+                        <select name="entity[classification][revenue]" id="entity_classification_revenue" required aria-describedby="entity_classification_revenue_help" class="form-select">
+                            <option value="">- Revenue -</option>
+                            {% for account in classifications.revenue %}
+                                <option value="{{ account.code }}">{{ account.code }}: {{ account.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="entity_name" class="form-label">Description</label>
+                    <input type="text" class="form-control" placeholder="Computers and accessories" required id="entity_desc" aria-describedby="entity_desc_help" value="{% if entity %}{{ entity.desc }}{% endif %}">
+                    <div id="entity_desc_help" class="form-text">What describes the items/purpose of this organisation.</div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="entity_contact_address" class="form-label">Address</label>
+                        <input type="text" id="entity_contact_address" name="entity[contact][address]" class="form-control" placeholder="12, Gosh Street, Town" aria-label="Address">
+                    </div>
+                    <div class="col">
+                        <label for="entity_contact_postcode" class="form-label">Postcode</label>
+                        <input type="text" id="entity_contact_postcode" name="entity[contact][postcode]" class="form-control" placeholder="123446" aria-label="Postcode">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="entity_contact_email" class="form-label">Email Address</label>
+                        <input type="email" id="entity_contact_email" name="entity[contact][email]" class="form-control" placeholder="hello@acme.com" aria-label="Email Address">
+                    </div>
+                    <div class="col">
+                        <label for="entity_contact_website" class="form-label">Website</label>
+                        <input type="text" id="entity_contact_website" name="entity[contact][website]" pattern="^https?://.*" class="form-control" placeholder="https://www.acme.com" aria-label="Website Address">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="entity_contact_phone" class="form-label">Phone Number</label>
+                        <input type="text" id="entity_contact_phone" name="entity[contact][phone]" class="form-control" placeholder="+64xxxxxxxx" pattern="^\+[1-9]\d{1,14}" aria-label="Phone Number">
+                    </div>
+                    <div class="col">
+                        <label for="entity_contact_country" class="form-label">Country</label>
+                        <select name="entity[contact][country]" id="entity_contact_country" aria-describedby="entity_country_help" class="form-select">
+                            {% for abbr, country in countries.items() %}
+                                <option value="{{ abbr }}">{{ country}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row pt-3 pb-0">
+                    <div class="col">
+                        <a href="#" class="btn btn-lg btn-primary rounded-pill" id="entities-entity-create">Create Entity</a>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6 border-bottom border-start rounded-bottom-5 p-3 pb-0 pe-3 ps-3 unrounded-bottom-right">
+
+            </div>
+
+            <div class="col-sm-6 border border-top-0 rounded-bottom-5 border-start-0 pe-3 unrounded-bottom-left text-end bg-body-secondary">
+
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}
+
+
+<!-- Specific JS goes HERE -->
+{% block javascript %}
+
+{% endblock javascript %}

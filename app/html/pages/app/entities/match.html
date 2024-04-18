@@ -1,0 +1,68 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Match Entity{% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="">
+    <div class="container col-sm-10 col-md-10 col-lg-8 mx-auto">
+        <div class=" text-center">
+            <div class="row g-0">
+                <div class="col col-12">
+                    <div class="resize-text">
+                        <h2>Match Entity<em>.</em></h2>
+                    </div>
+
+
+                    <div class="col-lg-12 mx-auto pt-4 pb-0">
+                        <a href="javascript:history.go(-1)" class="btn btn-primary px-4 gap-3 rounded-pill">Back to Previous Page</a>
+                        <!-- <a href="/app/connection/myob" class="btn btn-lg btn-outline-primary px-4 gap-3">Connect another organisation via
+                            MYOB</a> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form id="entity-transaction-match-form">
+        <div class="row">
+            <div class="col-sm-6 border-end"></div>
+            <div class="col-sm-6">&nbsp;</div>
+        </div>
+        <div class="row ">
+            <div class="col-sm-6 border rounded-top-5 border-bottom-0 border-end-1 p-5 unrounded-top-right resize-text">
+
+                {% include 'partials/app/entities/match/transaction.html' %}
+
+            </div>
+            <div class="col-sm-6 border rounded-top-5 border-bottom-0 border-start-0 p-5 unrounded-top-left bg-body-secondary">
+
+                {% include 'partials/app/entities/match/entity.html' %}
+
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6 border-bottom border-start rounded-bottom-5 p-3 pb-0 pe-3 ps-3 unrounded-bottom-right">
+
+            </div>
+
+            <div class="col-sm-6 border border-top-0 rounded-bottom-5 border-start-0 pe-3 unrounded-bottom-left text-end bg-body-secondary">
+
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}
+
+
+<!-- Specific JS goes HERE -->
+{% block javascript %}
+
+{% endblock javascript %}

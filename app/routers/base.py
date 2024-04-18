@@ -4,7 +4,7 @@ from fastapi import Depends, HTTPException, APIRouter, Request, Body, Response, 
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.responses import JSONResponse
 
-from app.helpers.templates import templates
+from helpers.generic.templates import templates
 
 router = APIRouter(
     tags=["base"],
@@ -20,30 +20,12 @@ router = APIRouter(
 
 
 @router.get("/", response_class=HTMLResponse)
-async def homepage(
-    request: Request
-):
-    if 'auth_access_token' in request.session:
+async def homepage(request: Request):
+    if "auth_access_token" in request.session:
         return RedirectResponse("/app")
 
-    response = templates.TemplateResponse("pages/index.html", {"request": request})
-    return response
-
-
-@router.get("/legal", response_class=HTMLResponse)
-async def legal(
-    request: Request
-):
-    response = templates.TemplateResponse("pages/legal.html", {"request": request})
-    return response
-
-
-@router.get("/about", response_class=HTMLResponse)
-async def about(
-    request: Request
-):
-    response = templates.TemplateResponse("pages/about.html", {"request": request})
-    return response
+    else:
+        return RedirectResponse("/auth/login")
 
 
 @router.get("/.well-known/microsoft-identity-association.json", response_class=JSONResponse)

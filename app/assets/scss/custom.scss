@@ -19,7 +19,7 @@ mark
   color: #8E00FD;
 }
 
-body > div.container:first-child
+body > div:first-child
 {
   background-color: $primary !important;
   color: #fff;
@@ -157,11 +157,53 @@ div .alert-danger a {
 }
 
 .nav .user-logged-in {
-  color: $secondary;
+  color: #fff;
   font-size: 0.8em;
   line-height: 1;
 
   i {
     font-size: 2em;
   }
+}
+
+.unrounded-top-left
+{
+  border-top-left-radius: 0 !important;
+}
+
+.unrounded-top-right
+{
+  border-top-right-radius: 0 !important;
+}
+
+.unrounded-bottom-left
+{
+  border-bottom-left-radius: 0 !important;
+}
+
+.unrounded-bottom-right
+{
+  border-bottom-right-radius: 0 !important;
+}
+
+input:invalid {
+    border-color: red;
+}
+
+
+.btn-qa-primary {
+  --bs-btn-font-weight: 600;
+  --bs-btn-color: var(--bs-white);
+  --bs-btn-bg: var(--bd-violet-bg);
+  --bs-btn-border-color: var(--bd-violet-bg);
+  --bs-btn-hover-color: var(--bs-white);
+  --bs-btn-hover-bg: #{shade-color($primary, 10%)};
+  --bs-btn-hover-border-color: #{shade-color($primary, 10%)};
+  --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+  --bs-btn-active-color: var(--bs-btn-hover-color);
+  --bs-btn-active-bg: #{shade-color($primary, 20%)};
+  --bs-btn-active-border-color: #{shade-color($primary, 20%)};
+  font-size: 40pt;
+  width: 100%;
+  height: 100%;
 }

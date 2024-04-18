@@ -9754,11 +9754,11 @@ mark, .mark {
   color: #8E00FD;
 }
 
-body > div.container:first-child {
+body > div:first-child {
   background-color: #8E00FD !important;
   color: #fff;
 }
-body > div.container:first-child a {
+body > div:first-child a {
   color: #fff;
   border-color: #fff;
 }
@@ -9871,12 +9871,49 @@ div .alert-danger a {
 }
 
 .nav .user-logged-in {
-  color: #6c757d;
+  color: #fff;
   font-size: 0.8em;
   line-height: 1;
 }
 .nav .user-logged-in i {
   font-size: 2em;
+}
+
+.unrounded-top-left {
+  border-top-left-radius: 0 !important;
+}
+
+.unrounded-top-right {
+  border-top-right-radius: 0 !important;
+}
+
+.unrounded-bottom-left {
+  border-bottom-left-radius: 0 !important;
+}
+
+.unrounded-bottom-right {
+  border-bottom-right-radius: 0 !important;
+}
+
+input:invalid {
+  border-color: red;
+}
+
+.btn-qa-primary {
+  --bs-btn-font-weight: 600;
+  --bs-btn-color: var(--bs-white);
+  --bs-btn-bg: var(--bd-violet-bg);
+  --bs-btn-border-color: var(--bd-violet-bg);
+  --bs-btn-hover-color: var(--bs-white);
+  --bs-btn-hover-bg: #8000e4;
+  --bs-btn-hover-border-color: #8000e4;
+  --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+  --bs-btn-active-color: var(--bs-btn-hover-color);
+  --bs-btn-active-bg: #7200ca;
+  --bs-btn-active-border-color: #7200ca;
+  font-size: 40pt;
+  width: 100%;
+  height: 100%;
 }
 
 /*# sourceMappingURL=app.css.map */

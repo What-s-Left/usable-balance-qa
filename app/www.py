@@ -2,7 +2,10 @@ import datetime
 from json import JSONDecodeError
 
 from dotenv import find_dotenv, load_dotenv
+from fastapi_sqlalchemy import DBSessionMiddleware
+from sqlalchemy import QueuePool
 
+from helpers.generic.secrets import get_secret
 from .config import config
 from os import environ
 import os
@@ -18,18 +21,16 @@ import sentry_sdk
 from sentry_sdk.integrations.starlette import StarletteIntegration
 from sentry_sdk.integrations.fastapi import FastApiIntegration
 
-from app.routers import base, auth, app, app_reconcile
-from app.helpers.templates import templates
-from app.helpers.auth import AuthorizeRequestMiddleware
-from app.helpers.error import error_response
-from app.data.models import Session
+from app.routers import base, auth, app, transactions, rules, entities
+from helpers.auth.qa import AuthorizeRequestMiddleware
+from helpers.app.error import error_response
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
 sentry_sdk.init(
-    dsn=os.getenv('SENTRY_DSN_FASTAPI'),
+    dsn=get_secret('SENTRY_DSN_FASTAPI'),
     integrations=[
         StarletteIntegration(transaction_style="url"),
         FastApiIntegration(transaction_style="url"),
@@ -44,7 +45,9 @@ def include_router(www):
     www.include_router(base.router)
     www.include_router(auth.router)
     www.include_router(app.router)
-    www.include_router(app_reconcile.router)
+    www.include_router(transactions.router)
+    www.include_router(rules.router)
+    www.include_router(entities.router)
 
 
 def mount_static(www):
@@ -61,9 +64,26 @@ def start_api():
     www.add_middleware(AuthorizeRequestMiddleware)
     www.add_middleware(
         SessionMiddleware,
-        secret_key=os.getenv("APP_SECRET_KEY"),
+        secret_key=get_secret("APP_SECRET_KEY"),
         #same_site="none",
         https_only=True
+    )
+
+    www.add_middleware(
+        DBSessionMiddleware,
+        db_url=get_secret("USABLEBALANCE_DB_CONNECTION_URI"),
+        engine_args={
+            "connect_args": {
+                # "check_same_thread": False may be necessary for SQLite
+            },
+            "pool_pre_ping": True,
+            "echo": False,  # Turn off in production for better performance
+            "poolclass": QueuePool,
+            "pool_size": 5,  # Adjust based on your app's typical workload
+            "max_overflow": 10,  # Allow some overflow but not too much
+            "pool_recycle": 1800,  # Recycle every 30 minutes or as needed
+            "future": True,
+        },
     )
 
     www.add_middleware(

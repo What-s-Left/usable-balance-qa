@@ -1,35 +1,21 @@
-// Functions
+import Data from './helpers/data'
+import Funcs from './helpers/func'
 
-function parse_hash()
-{
-    const params = new Proxy(
-        new URLSearchParams(window.location.hash.slice(1)), {
-            get: (searchParams, prop) => searchParams.get(prop),
-        }
-    );
+import {EntitiesMatch} from './entities/match'
+import {EntitiesManage} from "./entities/manage";
 
-    return params
+
+async function init() {
+
+    await EntitiesMatch.setup_listeners()
+    await EntitiesManage.setup_listeners()
+
+    console.log("Usable Balance App - Ready :)");
+
 }
 
-function parse_query_string()
-{
-    const params = new Proxy(
-        new URLSearchParams(window.location.search), {
-            get: (searchParams, prop) => searchParams.get(prop),
-        }
-    );
 
-    return params
-}
+await init();
 
-function random_string(length)
-{
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
+// QA - Entities Match
 
-    return result;
-}
