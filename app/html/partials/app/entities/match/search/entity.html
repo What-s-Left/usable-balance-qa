@@ -3,20 +3,21 @@
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th scope="col">Name (Trading)</th>
-            <th scope="col">Name (Legal)</th>
-            <th></th>
+            <!-- <th scope="col">Source</th> -->
+            <th scope="col" style="width: 25%;">Trading Name(s)</th>
+            <th scope="col" style="width: 65%;">Entity</th>
+            <th style="width: 10%;"></th>
         </tr>
         </thead>
     {% for entity in entities %}
 
     <tbody>
         <tr>
-            <td>{{ entity.name }}</td>
-            <td><p class="mb-0">{{ entity.name_legal }}</p>
-                {% if (entity.classification|get_value_from_key('BIC', True)).desc %}
-                <p class="mb-0"><em>{{ (entity.classification|get_value_from_key('BIC', True)).desc }}</em></p>
-                {% endif %}
+            <!-- <td>{{ entity.source }}</td> -->
+            <td>{{ entity.identifier | get_values_from_key('TRADINGNAME') | join(', ') }}</td>
+            <td><p class="mb-0">{{ entity.name }}</p>
+                <p class="mb-0"><em>{{ entity.desc }}</em></p>
+
                 <p class="mb-0">{{ entity.contact|get_value_from_key('ADDRESS') }}, {{ entity.contact|get_value_from_key('POSTCODE') }}</p>
             </td>
             <td>
@@ -25,9 +26,9 @@
                     class="btn btn-primary btn-sm px-4 gap-3 rounded-pill entity-transaction-match"
                     data-entity-id="{{ entity.id }}"
                 ><i class="bi bi-check-circle-fill"></i> Match Transaction(s)</a>
-
             </td>
         </tr>
+
     </tbody>
 
     {% endfor %}
