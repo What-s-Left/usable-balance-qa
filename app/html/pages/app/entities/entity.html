@@ -43,16 +43,11 @@
 
                 <h4 class="pb-2 text-primary">Details</h4>
 
-                <input type="hidden" id="json_entity_name" value="" />
-                <input type="hidden" id="json_entity_identifier" value="" />
-                <input type="hidden" id="json_entity_classification" value="" />
-                <input type="hidden" id="json_entity_contact" value="" />
-
                 <div class="mb-3 ps-0">
-                    <label for="entity_name" class="form-label">Entity Name (Trading)</label>
-                    <input type="text" class="form-control" id="entity_name" placeholder="Acme Co" aria-describedby="entity_name_help" value="{% if entity %}{{ entity.name }}{% endif %}">
+                    <label for="entity_name" class="form-label">Entity Name (Legal)</label>
+                    <input type="text" class="form-control" id="entity_name" placeholder="Acme Co" required aria-describedby="entity_name_help" value="{% if entity %}{{ entity.name }}{% endif %}">
 
-                    <div id="entity_name_help" class="form-text form-control-sm ps-0">The name people usually know it as.</div>
+                    <div id="entity_name_help" class="form-text form-control-sm ps-0">The name that would be on legal documents.</div>
                 </div>
 
                 <div class="mb-3 ps-0">
@@ -60,26 +55,37 @@
                 </div>
 
                 <div class="row mb-3">
-                    <div class="col">
-                        <label for="entity_name" class="form-label">Entity Name (Legal)</label>
-                        <input type="text" class="form-control" placeholder="Acme Co Limited" id="entity_name_legal" aria-describedby="entity_name_legal_help" value="{% if entity %}{{ entity.name_legal }}{% endif %}">
-                        <div id="entity_name_legal_help" class="form-text form-control-sm ps-0">The name found in the companies office.</div>
+                    <div class="col-4">
+                        <label for="entity_identifier_tradingname" class="form-label">Entity Name (Also Known As)</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Acme Co Limited" aria-label="Acme Co Limited" id="entity_identifier_tradingname" aria-describedby="button-addon2">
+                            <button class="btn btn-primary" type="button" id="entity_identifier_tradingname-add">Add</button>
+                        </div>
+                         <div id="entity_identifier_tradingname_help" class="form-text form-control-sm ps-0">What the organisation is often known as.</div>
+
                     </div>
+                    <div class="col-8">
+                        <label for="entity_identifier_tradingname" class="form-label">.</label>
+                        <button type="button" id="entity_identifier_tradingname_value" class="btn mb-2 me-1 rounded-pill btn-outline-primary visually-hidden">Trading Name <i class="bi bi-x-circle-fill"></i></button>
+                        <div id="entity_identifier_tradingname_values">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row mb-3">
                     <div class="col">
                         <label for="entity_identifier_nzbn" class="form-label">NZBN (if in NZ) <small><a href="https://www.nzbn.govt.nz/mynzbn/search/" target="_blank">Search</a></small></label>
                         <input type="text" class="form-control" id="entity_identifier_nzbn" aria-describedby="entity_identifier_nzbn_help" placeholder="94xxxxxxxxxxx"  pattern="^94\d{11}$" value="{% if entity %}{{ entity.identifier.nzbn }}{% endif %}">
                     </div>
-                </div>
-
-                <div class="row mb-3">
                     <div class="col">
                         <label for="entity_identifier_ird" class="form-label">IRD/GST Number (if NZ based)</label>
                         <input type="text" class="form-control" placeholder="000-000-000" id="entity_identifier_ird" aria-describedby="entity_desc_help" value="{% if entity %}{{ entity.identifier.ird }}{% endif %}">
                         <div id="entity_identifier_ird_help" class="form-text">IRD/GST number in 000-000-000 format.</div>
                     </div>
                     <div class="col">
-                        <label for="entity_identifier_gst_registered" class="form-label">Registered for GST in NZ</label>
-                        <select name="entity[identifier][gst_registered]" id="entity_identifier_gst_registered" class="form-select" aria-label="Default select example">
+                        <label for="entity_classification_gst_registered" class="form-label">Registered for GST in NZ</label>
+                        <select name="entity[classification][gst_registered]" id="entity_classification_gst_registered" class="form-select">
                             <option value="Y">Yes</option>
                             <option value="N">No</option>
                         </select>
@@ -89,8 +95,9 @@
 
                 <div class="row mb-3">
                     <div class="col">
-                        <label for="entity_classification_purchase" class="form-label">Default Classification: Expense</label>
-                        <select name="entity[classification][purchase]" id="entity_classification_purchase" aria-describedby="entity_classification_purchase_help" class="form-select">
+                        <label for="entity_classification_expense" class="form-label">Default Classification: Expense</label>
+                        <select name="entity[classification][expense]" id="entity_classification_expense" required aria-describedby="entity_classification_expense_help" class="form-select">
+                            <option value="">- Expense -</option>
                             {% for account in classifications.expense %}
                                 <option value="{{ account.code }}">{{ account.code }}: {{ account.name }}</option>
                             {% endfor %}
@@ -98,7 +105,8 @@
                     </div>
                     <div class="col">
                         <label for="entity_classification_revenue" class="form-label">Default Classification: Revenue</label>
-                        <select name="entity[classification][revenue]" id="entity_classification_revenue" aria-describedby="entity_classification_revenue_help" class="form-select">
+                        <select name="entity[classification][revenue]" id="entity_classification_revenue" required aria-describedby="entity_classification_revenue_help" class="form-select">
+                            <option value="">- Revenue -</option>
                             {% for account in classifications.revenue %}
                                 <option value="{{ account.code }}">{{ account.code }}: {{ account.name }}</option>
                             {% endfor %}
@@ -108,7 +116,7 @@
 
                 <div class="mb-3">
                     <label for="entity_name" class="form-label">Description</label>
-                    <input type="text" class="form-control" placeholder="Computers and accessories" id="entity_desc" aria-describedby="entity_desc_help" value="{% if entity %}{{ entity.desc }}{% endif %}">
+                    <input type="text" class="form-control" placeholder="Computers and accessories" required id="entity_desc" aria-describedby="entity_desc_help" value="{% if entity %}{{ entity.desc }}{% endif %}">
                     <div id="entity_desc_help" class="form-text">What describes the items/purpose of this organisation.</div>
                 </div>
 
@@ -119,14 +127,14 @@
                     </div>
                     <div class="col">
                         <label for="entity_contact_postcode" class="form-label">Postcode</label>
-                        <input type="text" id="entity_contact_postcode" name="entity[contact][postcode]" pattern="^https?://.*" class="form-control" placeholder="123446" aria-label="Postcode">
+                        <input type="text" id="entity_contact_postcode" name="entity[contact][postcode]" class="form-control" placeholder="123446" aria-label="Postcode">
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col">
                         <label for="entity_contact_email" class="form-label">Email Address</label>
-                        <input type="text" id="entity_contact_email" name="entity[contact][email]" class="form-control" placeholder="hello@acme.com" aria-label="Email Address">
+                        <input type="email" id="entity_contact_email" name="entity[contact][email]" class="form-control" placeholder="hello@acme.com" aria-label="Email Address">
                     </div>
                     <div class="col">
                         <label for="entity_contact_website" class="form-label">Website</label>
@@ -137,11 +145,11 @@
                 <div class="row mb-3">
                     <div class="col">
                         <label for="entity_contact_phone" class="form-label">Phone Number</label>
-                        <input type="text" id="entity_contact_phone" name="entity[contact][phone]" class="form-control" placeholder="+64xxxxxxxx" aria-label="Phone Number">
+                        <input type="text" id="entity_contact_phone" name="entity[contact][phone]" class="form-control" placeholder="+64xxxxxxxx" pattern="^\+[1-9]\d{1,14}" aria-label="Phone Number">
                     </div>
                     <div class="col">
-                        <label for="entity_country" class="form-label">Country</label>
-                        <select name="entity_country" id="entity_country" aria-describedby="entity_country_help" class="form-select">
+                        <label for="entity_contact_country" class="form-label">Country</label>
+                        <select name="entity[contact][country]" id="entity_contact_country" aria-describedby="entity_country_help" class="form-select">
                             {% for abbr, country in countries.items() %}
                                 <option value="{{ abbr }}">{{ country}}</option>
                             {% endfor %}

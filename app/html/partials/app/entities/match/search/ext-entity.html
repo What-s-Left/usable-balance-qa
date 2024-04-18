@@ -9,15 +9,15 @@
             <th style="width: 10%;"></th>
         </tr>
         </thead>
-    {% for entity in entities.entities %}
+    {% for entity in entities %}
 
     <tbody>
         <tr>
             <!-- <td>{{ entity.source }}</td> -->
-            <td>{{ entity.name|join(", ") }}</td>
-            <td><p class="mb-0">{{ entity.name_legal }}</p>
-                {% if (entity.classification|get_value_from_key('BIC', True)).desc %}
-                <p class="mb-0"><em>{{ (entity.classification|get_value_from_key('BIC', True)).desc }}</em></p>
+            <td>{{ entity.identifier | get_values_from_key('TRADINGNAME') | join(', ') }}</td>
+            <td><p class="mb-0">{{ entity.name }}</p>
+                {% if entity.classification | get_value_from_key('BICDESC') %}
+                <p class="mb-0"><em>{{ entity.classification | get_value_from_key('BICDESC') }}</em></p>
                 {% endif %}
                 <p class="mb-0">{{ entity.contact|get_value_from_key('ADDRESS') }}, {{ entity.contact|get_value_from_key('POSTCODE') }}</p>
             </td>
@@ -35,16 +35,17 @@
                     data-entity-identifier-nzbn="{{ entity.identifier|get_value_from_key('GS1') }}"
                     data-entity-identifier-nzgst="{{ entity.identifier|get_value_from_key('NZ:GST') }}"
                     data-entity-identifier-ird="{{ entity.identifier|get_value_from_key('IRD') }}"
-                    data-entity-name='{{ entity.name | tojson | safe }}'
-                    data-entity-name-legal='{{ entity.name_legal }}'
+                    data-entity-name="{{ entity.name }}"
                     data-entity-identifier='{{ entity.identifier | tojson | safe }}'
+                    data-entity-contact-address="{{ entity.contact|get_value_from_key('ADDRESS') }}"
+                    data-entity-contact-phone="{{ entity.contact|get_value_from_key('PHONE') }}"
                     data-entity-contact-postcode="{{ entity.contact|get_value_from_key('POSTCODE') }}"
                     data-entity-contact-country="{{ entity.contact|get_value_from_key('COUNTRY') }}"
                     data-entity-contact-website="{{ entity.contact|get_value_from_key('WEBSITE') }}"
                     data-entity-contact='{{ entity.contact | tojson | safe }}'
                     data-entity-classification='{{ entity.classification | tojson | safe }}'
-                    data-entity-classification-bic-code="{{ entity.classification|get_value_from_key('BIC') }}"
-                    data-entity-classification-bic-desc="{{ (entity.classification|get_value_from_key('BIC', True)).desc }}"
+                    data-entity-classification-bic-code="{{ entity.classification | get_value_from_key('BICCODE') }}"
+                    data-entity-classification-bic-desc="{{ entity.classification|get_value_from_key('BICDESC') }}"
                     data-entity-country='{{ entity.country }}'
                 ><i class="bi bi-clipboard-plus-fill"></i> Copy</a>
                 {% endif %}

@@ -50,7 +50,7 @@ async def entities_index(
     return response
 
 
-@router.get("/match/feed", response_class=HTMLResponse)
+@router.get("/match/api/feed", response_class=HTMLResponse)
 async def entity_match_feed(
     request: Request,
     user: dict = Depends(get_qa_current_user),
@@ -76,7 +76,7 @@ async def entity_match_feed(
     return response
 
 
-@router.get("/match/entity", response_class=HTMLResponse)
+@router.get("/match/api/entity", response_class=HTMLResponse)
 async def entity_match_entity(
     request: Request,
     user: dict = Depends(get_qa_current_user),
@@ -100,7 +100,7 @@ async def entity_match_entity(
     return response
 
 
-@router.get("/match/ext-entity", response_class=HTMLResponse)
+@router.get("/match/api/ext-entity", response_class=HTMLResponse)
 async def ext_entity_match_entity(
     request: Request,
     user: dict = Depends(get_qa_current_user),
@@ -123,7 +123,7 @@ async def ext_entity_match_entity(
 
     return response
 
-@router.get("/match/ai", response_class=HTMLResponse)
+@router.get("/match/api/ai", response_class=HTMLResponse)
 async def ext_entity_match_entity_ai(
     request: Request,
     ext_entity_id: str,
@@ -250,7 +250,7 @@ async def entities_create(
     access: bool = Depends(get_qa_user_access),
 ):
 
-    entity = crud.entity_create(db=db.session, data=data, user_id=user["api"]["id"])
+    entity = crud.entity_create(db=db.session, data=data)
 
     if request.headers.get("Content-Type") == "application/json":
         response = JSONResponse({
@@ -312,10 +312,10 @@ async def entities_update(
 
     entity = crud.entity_get(db=db.session, entity_id=entity_id)
 
-    for identifier in data.identifier:
-        entity.identifier.append({
-            'type': identifier.get('type'),
-            'value': re.escape(identifier.get('value'))
+    for feed in data.feed:
+        entity.feed.append({
+            'type': feed.get('type'),
+            'value': re.escape(feed.get('value'))
         })
 
     entity = crud.entity_update(
