@@ -4,7 +4,6 @@ import Funcs from './helpers/func'
 import {EntitiesMatch} from './entities/match'
 import {EntitiesManage} from "./entities/manage";
 
-
 async function init() {
 
     await EntitiesMatch.setup_listeners()
@@ -14,8 +13,4 @@ async function init() {
 
 }
 
-
 await init();
-
-// QA - Entities Match
-

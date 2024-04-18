@@ -39,7 +39,7 @@ services:
       - secrets
 
   app-cli:
-    container_name: usable-balance-app-app-cli
+    container_name: usable-balance-qa-app-cli
     hostname: app-cli
     tty: true
     <<: *app-common
