@@ -16,13 +16,25 @@
                     <div class="resize-text">
                         <h2>Transactions<em>.</em></h2>
                     </div>
-                     <p>Here are transactions from Usable Balance<mark>.</mark>.
+                     <p>Here are transactions from <mark>Usable Balance</mark> entities.
                     </p>
 
-                    <div class="col-lg-12 mx-auto pt-4 pb-0">
-                        <a href="/" class="btn btn-primary px-4 gap-3 rounded-pill">Back to the Homepage</a>
-                        <!-- <a href="/app/connection/myob" class="btn btn-lg btn-outline-primary px-4 gap-3">Connect another organisation via
-                            MYOB</a> -->
+                    <div class="row">
+                        <div class="col-sm-4 ">
+                            <a href="/app/transactions/?page={{ page - 1 }}&per_page={{ per_page }}" class="btn btn-outline-secondary rounded-pill unrounded-top-right unrounded-bottom-right" type="button">Prev Page</a>
+                        </div>
+                        <div class="col-sm-4 ">
+                            <a href="/" class="btn btn-primary px-4 gap-3 rounded-pill">Back to the Homepage</a>
+                            <!-- <a href="/app/connection/myob" class="btn btn-lg btn-outline-primary px-4 gap-3">Connect another organisation via
+                                MYOB</a> -->
+                        </div>
+                        <div class="col-sm-4">
+                            <a href="/app/transactions/?page={{ page + 1 }}&per_page={{ per_page }}#" class="btn btn-outline-secondary rounded-pill unrounded-top-left unrounded-bottom-left" type="button" id="button-addon2">Next Page</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 border-end"></div>
+                        <div class="col-sm-6">&nbsp;</div>
                     </div>
                 </div>
             </div>
@@ -30,6 +42,8 @@
     </div>
 
     {% set prev = {'day': None, 'month': None, 'year': None} %}
+
+
 
     {% for transaction in transactions.transactions %}
 

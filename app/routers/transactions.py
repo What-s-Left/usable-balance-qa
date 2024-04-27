@@ -31,12 +31,18 @@ async def reconcile_entity(
 
     # Get entities associated to user
     transactions = crud.transaction_get_all(
-        db=db.session
+        db=db.session,
+        page=page,
+        limit=per_page,
+        search=search
     )
 
     response = templates.TemplateResponse("pages/app/transactions/index.html", {
         "request": request,
         "user": user,
+        "page": page,
+        "per_page": per_page,
+        "search": search,
         "transactions": transactions
     })
 

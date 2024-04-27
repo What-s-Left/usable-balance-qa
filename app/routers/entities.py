@@ -285,17 +285,16 @@ async def entities_view(
     response = templates.TemplateResponse("pages/app/entities/entity.html", {
         "request": request,
         "user": user,
+        "entity": entity,
         "transaction": transaction,
         "transaction_payee": transaction_payee,
         "transaction_reference": transaction_reference,
         "transaction_code": transaction_code,
-        "countries": countries
-    })
-
-    response = templates.TemplateResponse("pages/app/entities/entity.html", {
-        "request": request,
-        "user": user,
-        "entity": entity
+        "countries": countries,
+        "classifications": {
+            "expense": crud.account_get_all(db=db.session, classification="EXPENSE"),
+            "revenue": crud.account_get_all(db=db.session, classification="REVENUE"),
+        }
     })
 
     return response

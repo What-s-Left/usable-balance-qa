@@ -68,6 +68,11 @@
                         <label for="entity_identifier_tradingname" class="form-label">.</label>
                         <button type="button" id="entity_identifier_tradingname_value" class="btn mb-2 me-1 rounded-pill btn-outline-primary visually-hidden">Trading Name <i class="bi bi-x-circle-fill"></i></button>
                         <div id="entity_identifier_tradingname_values">
+                            {% if entity %}
+                                {% for trading_name in entity.identifier|get_values_from_key('TRADINGNAME') %}
+                                    <button type="button" class="btn mb-2 me-1 rounded-pill btn-outline-primary entity_trading_name" data-entity-trading-name="{{ trading_name | safe }}">{{ trading_name }} <i class="bi bi-x-circle-fill"></i></button>
+                                {% endfor %}
+                            {% endif %}
                         </div>
                     </div>
 
@@ -76,18 +81,18 @@
                 <div class="row mb-3">
                     <div class="col">
                         <label for="entity_identifier_nzbn" class="form-label">NZBN (if in NZ) <small><a href="https://www.nzbn.govt.nz/mynzbn/search/" target="_blank">Search</a></small></label>
-                        <input type="text" class="form-control" id="entity_identifier_nzbn" aria-describedby="entity_identifier_nzbn_help" placeholder="94xxxxxxxxxxx"  pattern="^94\d{11}$" value="{% if entity %}{{ entity.identifier.nzbn }}{% endif %}">
+                        <input type="text" class="form-control" id="entity_identifier_nzbn" aria-describedby="entity_identifier_nzbn_help" placeholder="94xxxxxxxxxxx"  pattern="^94\d{11}$" value="{% if entity %}{{ entity.identifier|get_value_from_key('GS1') }}{% endif %}">
                     </div>
                     <div class="col">
                         <label for="entity_identifier_ird" class="form-label">IRD/GST Number (if NZ based)</label>
-                        <input type="text" class="form-control" placeholder="000-000-000" id="entity_identifier_ird" aria-describedby="entity_desc_help" value="{% if entity %}{{ entity.identifier.ird }}{% endif %}">
+                        <input type="text" class="form-control" placeholder="000-000-000" id="entity_identifier_ird" aria-describedby="entity_desc_help" value="{% if entity %}{% if entity %}{{ entity.identifier|get_value_from_key('IRD') }}{% endif %}{% endif %}">
                         <div id="entity_identifier_ird_help" class="form-text">IRD/GST number in 000-000-000 format.</div>
                     </div>
                     <div class="col">
                         <label for="entity_classification_gst_registered" class="form-label">Registered for GST in NZ</label>
                         <select name="entity[classification][gst_registered]" id="entity_classification_gst_registered" class="form-select">
-                            <option value="Y">Yes</option>
-                            <option value="N">No</option>
+                            <option value="Y" {% if entity and entity.classification|get_value_from_key('NZ:GST') == "Y" %} selected{% endif %}>Yes</option>
+                            <option value="N" {% if entity and entity.classification|get_value_from_key('NZ:GST') == "N" %} selected{% endif %}>No</option>
                         </select>
                         <div id="entity_gst_registered_help" class="form-text">Is this company registered for GST in NZ?</div>
                     </div>
@@ -99,7 +104,7 @@
                         <select name="entity[classification][expense]" id="entity_classification_expense" required aria-describedby="entity_classification_expense_help" class="form-select">
                             <option value="">- Expense -</option>
                             {% for account in classifications.expense %}
-                                <option value="{{ account.code }}">{{ account.code }}: {{ account.name }}</option>
+                                <option value="{{ account.code }}" {% if entity and entity.classification|get_value_from_key('DEBIT') == account.code %} selected{% endif %}>{{ account.code }}: {{ account.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -108,7 +113,7 @@
                         <select name="entity[classification][revenue]" id="entity_classification_revenue" required aria-describedby="entity_classification_revenue_help" class="form-select">
                             <option value="">- Revenue -</option>
                             {% for account in classifications.revenue %}
-                                <option value="{{ account.code }}">{{ account.code }}: {{ account.name }}</option>
+                                <option value="{{ account.code }}" {% if entity and entity.classification|get_value_from_key('CREDIT') == account.code %} selected{% endif %}>{{ account.code }}: {{ account.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -123,35 +128,35 @@
                 <div class="row mb-3">
                     <div class="col">
                         <label for="entity_contact_address" class="form-label">Address</label>
-                        <input type="text" id="entity_contact_address" name="entity[contact][address]" class="form-control" placeholder="12, Gosh Street, Town" aria-label="Address">
+                        <input type="text" id="entity_contact_address" name="entity[contact][address]" class="form-control" placeholder="12, Gosh Street, Town" aria-label="Address" value="{% if entity %}{{ entity.contact|get_value_from_key('ADDRESS') }}{% endif %}">
                     </div>
                     <div class="col">
                         <label for="entity_contact_postcode" class="form-label">Postcode</label>
-                        <input type="text" id="entity_contact_postcode" name="entity[contact][postcode]" class="form-control" placeholder="123446" aria-label="Postcode">
+                        <input type="text" id="entity_contact_postcode" name="entity[contact][postcode]" class="form-control" placeholder="123446" aria-label="Postcode" value="{% if entity %}{{ entity.contact|get_value_from_key('POSTCODE') }}{% endif %}">
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col">
                         <label for="entity_contact_email" class="form-label">Email Address</label>
-                        <input type="email" id="entity_contact_email" name="entity[contact][email]" class="form-control" placeholder="hello@acme.com" aria-label="Email Address">
+                        <input type="email" id="entity_contact_email" name="entity[contact][email]" class="form-control" placeholder="hello@acme.com" aria-label="Email Address" value="{% if entity %}{{ entity.contact|get_value_from_key('EMAIL') }}{% endif %}">
                     </div>
                     <div class="col">
                         <label for="entity_contact_website" class="form-label">Website</label>
-                        <input type="text" id="entity_contact_website" name="entity[contact][website]" pattern="^https?://.*" class="form-control" placeholder="https://www.acme.com" aria-label="Website Address">
+                        <input type="text" id="entity_contact_website" name="entity[contact][website]" pattern="^https?://.*" class="form-control" placeholder="https://www.acme.com" aria-label="Website Address" value="{% if entity %}{{ entity.contact|get_value_from_key('WEBSITE') }}{% endif %}">
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col">
                         <label for="entity_contact_phone" class="form-label">Phone Number</label>
-                        <input type="text" id="entity_contact_phone" name="entity[contact][phone]" class="form-control" placeholder="+64xxxxxxxx" pattern="^\+[1-9]\d{1,14}" aria-label="Phone Number">
+                        <input type="text" id="entity_contact_phone" name="entity[contact][phone]" class="form-control" placeholder="+64xxxxxxxx" pattern="^\+[1-9]\d{1,14}" aria-label="Phone Number" value="{% if entity %}{{ entity.contact|get_value_from_key('PHONE') }}{% endif %}">
                     </div>
                     <div class="col">
                         <label for="entity_contact_country" class="form-label">Country</label>
                         <select name="entity[contact][country]" id="entity_contact_country" aria-describedby="entity_country_help" class="form-select">
                             {% for abbr, country in countries.items() %}
-                                <option value="{{ abbr }}">{{ country}}</option>
+                                <option value="{{ abbr }}" {% if entity and entity.country == abbr %} selected{% endif %}>{{ country}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -159,7 +164,11 @@
 
                 <div class="row pt-3 pb-0">
                     <div class="col">
+                        {% if entity %}
+                        <a href="#" class="btn btn-lg btn-primary rounded-pill" id="entities-entity-update">Update Entity</a>
+                        {% else %}
                         <a href="#" class="btn btn-lg btn-primary rounded-pill" id="entities-entity-create">Create Entity</a>
+                        {% endif %}
                     </div>
                 </div>
 
