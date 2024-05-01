@@ -41,10 +41,13 @@ async def entities_index(
         db=db.session
     )
 
-    response = templates.TemplateResponse("pages/app/transactions/index.html", {
+    response = templates.TemplateResponse("pages/app/entities/index.html", {
         "request": request,
         "user": user,
-        "entities": entities
+        "entities": entities,
+        "page": page,
+        "per_page": per_page,
+        "search": search,
     })
 
     return response

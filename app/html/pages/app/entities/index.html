@@ -1,0 +1,148 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Reconciling Entities{% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="px-4 py-4 my-4 col-12 ">
+    <div class="col-sm-10 col-md-10 col-lg-8 mx-auto">
+        <div class="container entity-detail text-center">
+            <div class="row g-0">
+                <div class="col col-12">
+                    <div class="resize-text">
+                        <h2>Entities<em>.</em></h2>
+                    </div>
+                     <p>Here are entities from <mark>Usable Balance</mark>.
+                    </p>
+
+                    <div class="row">
+                        <div class="col-sm-4 ">
+                            <a href="/app/entities/?page={{ page - 1 }}&per_page={{ per_page }}" class="btn btn-outline-secondary rounded-pill unrounded-top-right unrounded-bottom-right" type="button">Prev Page</a>
+                        </div>
+                        <div class="col-sm-4 ">
+                            <a href="/" class="btn btn-primary px-4 gap-3 rounded-pill">Back to the Homepage</a>
+                            <!-- <a href="/app/connection/myob" class="btn btn-lg btn-outline-primary px-4 gap-3">Connect another organisation via
+                                MYOB</a> -->
+                        </div>
+                        <div class="col-sm-4">
+                            <a href="/app/transactions/?page={{ page + 1 }}&per_page={{ per_page }}#" class="btn btn-outline-secondary rounded-pill unrounded-top-left unrounded-bottom-left" type="button" id="button-addon2">Next Page</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 border-end"></div>
+                        <div class="col-sm-6">&nbsp;</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% for entity in entities.entities %}
+
+
+         <div class="row">
+            <div class="col-sm-6 border-end"></div>
+            <div class="col-sm-6">&nbsp;</div>
+        </div>
+        <div class="row entity">
+            <div class="col-sm-3 border rounded-top-5 border-bottom-0 border-end-1 p-3 pb-0 pe-3 ps-3 unrounded-top-right resize-text">
+
+                <p><small>{{ entity.account.name }} - {{ transaction_line.account.identifier}}</small></p>
+                <h1>{{ entity.name }}</h1>
+
+                <p>{{ transaction.match_rule.desc }}</p>
+
+            </div>
+            <div class="col-sm-4 border-top pb-0 p-3 pe-5 ps-5 resize-text">
+
+                    {% if transaction.match_entity %}
+                        <h2>{{ transaction.match_entity.name }}</h2>
+                        <h5>{{ transaction.match_entity.identifier|get }}</h5>
+
+                    {% else %}
+                            <h2>{{ transaction.src.desc.payee }}</h2>
+                    {% endif %}
+
+
+
+                {% if transaction.feed.status == 'RECONCILED_PENDING' %}
+                <p class="card-text text-warning"><i class="bi bi-slash-circle-fill"></i> We need more information about this transaction as you've spent over $1,000.</p>
+                {% endif %}
+
+
+
+            </div>
+            <div class="col-sm-5 border rounded-top-5 border-bottom-0 border-start-0 pb-0 p-3 pe-3 unrounded-top-left bg-body-secondary">
+
+                <p><small>Breakdown</small></p>
+
+
+                    {% for transaction_line in transaction.lines %}
+                        {% if transaction_line.account.code != 'A-BANK' and transaction_line.amount_total != 0 %}
+                        <div class="row g-0 pt-2 border-top">
+                            <div class="col-sm-4 text-end pe-3">
+                                <h4>
+                                    {{ "-$" if transaction_line.amount_balance < 0 else "$" }}{{ "{:,.2f}".format(transaction_line.amount_balance|abs) }}
+                                </h4>
+                            </div>
+                            <div class="col-sm-8">
+                                <h4>{{ transaction_line.account.name }}</h4>
+                                {% if transaction_line.account.code.startswith('E-') %}
+                                <p><small>{% if "match_entity" in transaction %}{{ transaction.match_entity.desc }}{% else %}{{ transaction_line.account.desc }}{% endif %}</small></p>
+                                {% else %}
+                                <p><small>{{ transaction_line.account.desc }}</small></p>
+
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3 border border-top-0 rounded-bottom-5 border-end-1 ps-3 unrounded-bottom-right">
+                <p>
+
+
+                </p>
+            </div>
+            <div class="col-sm-4 border-bottom ps-3 text-center">
+                <p>
+                    {% if transaction.metrics.match['items'].entity %}
+                    <a href="/app/entities/{{ transaction.match_entity.id }}?transaction_id={{ transaction.id }}" class="btn btn-primary btn-sm px-4 gap-3 rounded-pill"><i class="bi bi-check-circle-fill"></i> Entity</a>
+                    {% else %}
+                    <a href="/app/entities/match?payee={{ transaction.src.desc.payee }}&reference={{ transaction.src.desc.reference }}&code={{ transaction.src.desc.code }}&transaction_id={{ transaction.id }}" class="btn btn-secondary btn-sm px-4 gap-3 rounded-pill"><i class="bi bi-x-circle-fill"></i> Entity</a>
+                    {% endif %}
+
+                    {% if "BASE" not in transaction.match_rule.id_src %}
+                    <a href="/app/rules/{{ transaction.match_rule.id }}?transaction_id={{ transaction.id }}" class="btn btn-primary btn-sm px-4 gap-3 rounded-pill"><i class="bi bi-check-circle-fill"></i> Bank Rule</a>
+                    {% else %}
+                    <a href="/app/rules/match?payee={{ transaction.src.desc.payee }}&reference={{ transaction.src.desc.reference }}&code={{ transaction.src.desc.code }}&transaction_id={{ transaction.id }}" class="btn btn-secondary btn-sm px-4 gap-3 rounded-pill"><i class="bi bi-x-circle-fill"></i> Bank Rule</a>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="col-sm-5 border border-top-0 rounded-bottom-5 border-start-0 pe-3  unrounded-bottom-left text-end bg-body-secondary">
+                <p>
+                    <a href="/app/transactions/{{ transaction.id }}" class="btn btn-secondary btn-sm px-4 gap-3 rounded-pill">Change</a>
+                </p>
+            </div>
+        </div>
+
+
+        {# Update the tracking variables at the end of each iteration #}
+
+    {% endfor %}
+</div>
+{% endblock content %}
+
+
+<!-- Specific JS goes HERE -->
+{% block javascript %}
+
+{% endblock javascript %}
