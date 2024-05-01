@@ -51,56 +51,42 @@
         <div class="row entity">
             <div class="col-sm-3 border rounded-top-5 border-bottom-0 border-end-1 p-3 pb-0 pe-3 ps-3 unrounded-top-right resize-text">
 
-                <p><small>{{ entity.account.name }} - {{ transaction_line.account.identifier}}</small></p>
-                <h1>{{ entity.name }}</h1>
+                {% if entity.identifier|get_value_from_key('GS1') %}
+                <p><small>NZBN: <a href="https://nzbn.govt.nz/mynzbn/nzbndetails/{{ entity.identifier|get_value_from_key('GS1') }}/" target="_blank">{{ entity.identifier|get_value_from_key('GS1') }}</a></small></p>
+                {% endif %}
 
-                <p>{{ transaction.match_rule.desc }}</p>
+                <h2>{{ entity.name }}</h2>
+                {% if entity.identifier|get_values_from_key('TRADINGNAME') %}
+                <p class="mb-0"><small><em>Trading Names</em></small></p>
+                <p>{{ entity.identifier|get_values_from_key('TRADINGNAME')|join(', ') }}</p>
+                {% endif %}
+
 
             </div>
             <div class="col-sm-4 border-top pb-0 p-3 pe-5 ps-5 resize-text">
 
-                    {% if transaction.match_entity %}
-                        <h2>{{ transaction.match_entity.name }}</h2>
-                        <h5>{{ transaction.match_entity.identifier|get }}</h5>
+                    <p class="mb-0"><small><em>Description</em></small></p>
+                    <p>{{ entity.desc }}</p>
 
-                    {% else %}
-                            <h2>{{ transaction.src.desc.payee }}</h2>
-                    {% endif %}
-
-
-
-                {% if transaction.feed.status == 'RECONCILED_PENDING' %}
-                <p class="card-text text-warning"><i class="bi bi-slash-circle-fill"></i> We need more information about this transaction as you've spent over $1,000.</p>
-                {% endif %}
-
-
+                    <p class="mb-0"><small><em>Address</em></small></p>
+                    <p>
+                        {% if entity.contact|get_value_from_key('ADDRESS') %}
+                            {{ entity.contact|get_value_from_key('ADDRESS') }},
+                        {% endif %}
+                        {% if entity.contact|get_value_from_key('POSTCODE') %}
+                        {{ entity.contact|get_value_from_key('POSTCODE') }},
+                        {% endif %}
+                        {{ entity.country }}
+                    </p>
 
             </div>
             <div class="col-sm-5 border rounded-top-5 border-bottom-0 border-start-0 pb-0 p-3 pe-3 unrounded-top-left bg-body-secondary">
 
-                <p><small>Breakdown</small></p>
+                <p><small>Payee</small></p>
 
-
-                    {% for transaction_line in transaction.lines %}
-                        {% if transaction_line.account.code != 'A-BANK' and transaction_line.amount_total != 0 %}
-                        <div class="row g-0 pt-2 border-top">
-                            <div class="col-sm-4 text-end pe-3">
-                                <h4>
-                                    {{ "-$" if transaction_line.amount_balance < 0 else "$" }}{{ "{:,.2f}".format(transaction_line.amount_balance|abs) }}
-                                </h4>
-                            </div>
-                            <div class="col-sm-8">
-                                <h4>{{ transaction_line.account.name }}</h4>
-                                {% if transaction_line.account.code.startswith('E-') %}
-                                <p><small>{% if "match_entity" in transaction %}{{ transaction.match_entity.desc }}{% else %}{{ transaction_line.account.desc }}{% endif %}</small></p>
-                                {% else %}
-                                <p><small>{{ transaction_line.account.desc }}</small></p>
-
-                                {% endif %}
-                            </div>
-                        </div>
-                        {% endif %}
-                    {% endfor %}
+                <ul>
+                    <li>{% for value in entity.feed|get_values_from_key('BANK:PAYEE') %}{{ value|safe }}{% if not loop.last %}</li><li>{% endif %}{% endfor %}</li>
+                </ul>
 
 
             </div>
@@ -113,23 +99,15 @@
                 </p>
             </div>
             <div class="col-sm-4 border-bottom ps-3 text-center">
+                <!--
                 <p>
-                    {% if transaction.metrics.match['items'].entity %}
-                    <a href="/app/entities/{{ transaction.match_entity.id }}?transaction_id={{ transaction.id }}" class="btn btn-primary btn-sm px-4 gap-3 rounded-pill"><i class="bi bi-check-circle-fill"></i> Entity</a>
-                    {% else %}
-                    <a href="/app/entities/match?payee={{ transaction.src.desc.payee }}&reference={{ transaction.src.desc.reference }}&code={{ transaction.src.desc.code }}&transaction_id={{ transaction.id }}" class="btn btn-secondary btn-sm px-4 gap-3 rounded-pill"><i class="bi bi-x-circle-fill"></i> Entity</a>
-                    {% endif %}
+                    <a href="/app/entities/{{ entity.id }}" class="btn btn-primary btn-sm px-4 gap-3 rounded-pill"><i class="bi bi-check-circle-fill"></i> Entity</a>
 
-                    {% if "BASE" not in transaction.match_rule.id_src %}
-                    <a href="/app/rules/{{ transaction.match_rule.id }}?transaction_id={{ transaction.id }}" class="btn btn-primary btn-sm px-4 gap-3 rounded-pill"><i class="bi bi-check-circle-fill"></i> Bank Rule</a>
-                    {% else %}
-                    <a href="/app/rules/match?payee={{ transaction.src.desc.payee }}&reference={{ transaction.src.desc.reference }}&code={{ transaction.src.desc.code }}&transaction_id={{ transaction.id }}" class="btn btn-secondary btn-sm px-4 gap-3 rounded-pill"><i class="bi bi-x-circle-fill"></i> Bank Rule</a>
-                    {% endif %}
-                </p>
+                </p>-->
             </div>
             <div class="col-sm-5 border border-top-0 rounded-bottom-5 border-start-0 pe-3  unrounded-bottom-left text-end bg-body-secondary">
                 <p>
-                    <a href="/app/transactions/{{ transaction.id }}" class="btn btn-secondary btn-sm px-4 gap-3 rounded-pill">Change</a>
+                    <a href="/app/entities/{{ entity.id }}" class="btn btn-secondary btn-sm px-4 gap-3 rounded-pill">Edit Entity</a>
                 </p>
             </div>
         </div>

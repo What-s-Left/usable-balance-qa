@@ -312,19 +312,7 @@ async def entities_update(
     access: bool = Depends(get_qa_user_access),
 ):
 
-    entity = crud.entity_get(db=db.session, entity_id=entity_id)
-
-    for feed in data.feed:
-        entity.feed.append({
-            'type': feed.get('type'),
-            'value': re.escape(feed.get('value'))
-        })
-
-    entity = crud.entity_update(
-        db=db.session,
-        entity_id=entity_id,
-        data=entity
-    )
+    entity = crud.entity_update(db=db.session, entity_id=entity_id, data=data)
 
     if request.headers.get("Content-Type") == "application/json":
         response = JSONResponse({
