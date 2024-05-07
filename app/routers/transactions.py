@@ -33,7 +33,7 @@ async def reconcile_entity(
     transactions = crud.transaction_get_all(
         db=db.session,
         page=page,
-        limit=per_page,
+        per_page=per_page,
         search=search
     )
 

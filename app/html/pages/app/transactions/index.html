@@ -20,16 +20,33 @@
                     </p>
 
                     <div class="row">
-                        <div class="col-sm-4 ">
-                            <a href="/app/transactions/?page={{ page - 1 }}&per_page={{ per_page }}" class="btn btn-outline-secondary rounded-pill unrounded-top-right unrounded-bottom-right" type="button">Prev Page</a>
-                        </div>
-                        <div class="col-sm-4 ">
+
+                        <div class="col-sm-12 ">
                             <a href="/" class="btn btn-primary px-4 gap-3 rounded-pill">Back to the Homepage</a>
                             <!-- <a href="/app/connection/myob" class="btn btn-lg btn-outline-primary px-4 gap-3">Connect another organisation via
                                 MYOB</a> -->
                         </div>
-                        <div class="col-sm-4">
-                            <a href="/app/transactions/?page={{ page + 1 }}&per_page={{ per_page }}#" class="btn btn-outline-secondary rounded-pill unrounded-top-left unrounded-bottom-left" type="button" id="button-addon2">Next Page</a>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 border-end"></div>
+                        <div class="col-sm-6">&nbsp;</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-group">
+                            <a href="/app/transactions/?page={{ page - 1 }}&per_page={{ per_page }}" class="btn btn-outline-primary rounded-pill unrounded-top-right unrounded-bottom-right {% if page == 1 %}disabled{% endif %}" type="button">Prev Page</a>
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Filter</button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#">Unmatched Entity</a></li>
+                                <li><a class="dropdown-item" href="#">Matched Entity</a></li>
+                                <li><a class="dropdown-item" href="#">Default Bank Rule</a></li>
+                            </ul>
+                            <input type="text" class="form-control" placeholder="Search..." aria-label="Search" aria-describedby="search-addon">
+                          <span class="input-group-text" id="search-addon">
+                            <i class="bi bi-search"></i>
+                          </span>
+                            <a href="/app/transactions/?page={{ page + 1 }}&per_page={{ per_page }}#" class="btn btn-outline-primary rounded-pill unrounded-top-left unrounded-bottom-left" type="button" id="button-addon2">Next Page</a>
                         </div>
                     </div>
                     <div class="row">
