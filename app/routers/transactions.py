@@ -25,6 +25,7 @@ async def reconcile_entity(
     page: int = 1,
     per_page: int = 25,
     search: str = None,
+    status: str = None,
     user: dict = Depends(get_qa_current_user),
     access: bool = Depends(get_qa_user_access),
 ):
@@ -34,7 +35,8 @@ async def reconcile_entity(
         db=db.session,
         page=page,
         per_page=per_page,
-        search=search
+        search=search,
+        status=status
     )
 
     response = templates.TemplateResponse("pages/app/transactions/index.html", {
@@ -43,6 +45,7 @@ async def reconcile_entity(
         "page": page,
         "per_page": per_page,
         "search": search,
+        "status": status,
         "transactions": transactions
     })
 

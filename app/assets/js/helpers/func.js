@@ -1,4 +1,17 @@
 class Funcs {
+
+    static param_add(name, value)
+    {
+        const url = new URL(window.location);
+        const query_params = new URLSearchParams(url.search);
+
+        query_params.set(name, value);
+        url.search = query_params.toString();
+
+        // Refresh the page with the new URL
+        window.location.href = url.href;
+    }
+
     static parse_hash()
     {
         const params = new Proxy(
