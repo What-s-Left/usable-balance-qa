@@ -3,7 +3,7 @@
 <div class="row g-0 pt-2 border-top">
     <div class="col-12 mb-3 ps-0">
         <label class="form-label" for="entity_name_search">Organisation Name</label>
-        <input type="text" class="form-control" placeholder="Acme Co Limited" id="entity_name_search" aria-describedby="entity_name_search_help" value="{% if entity %}{{ entity.name_legal }}{% endif %}">
+        <input type="text" class="form-control" placeholder="Acme Co Limited" id="entity_name_search" aria-describedby="entity_name_search_help" value="{% if entity %}{{ entity.name_legal }}{% elif transaction_payee %}{{ transaction_payee }}{% endif %}">
         <div id="entity_name_legal_help" class="form-text form-control-sm ps-0">The name found in either trading or legal name(s) to import into new Entity.</div>
     </div>
 </div>

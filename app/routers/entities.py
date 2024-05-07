@@ -106,6 +106,9 @@ async def entity_match_entity(
 @router.get("/match/api/ext-entity", response_class=HTMLResponse)
 async def ext_entity_match_entity(
     request: Request,
+    name: str = None,
+    page: int = 1,
+    per_page: int = 25,
     user: dict = Depends(get_qa_current_user),
     access: bool = Depends(get_qa_user_access),
 ):
@@ -114,8 +117,10 @@ async def ext_entity_match_entity(
     entities = crud.ext_entity_get_all(
         db=db.session,
         search={
-            'name': request.query_params.get('name'),
-        }
+            'name': name,
+        },
+        page=page,
+        per_page=per_page
     )
 
     response = templates.TemplateResponse("partials/app/entities/match/search/ext-entity.html", {
