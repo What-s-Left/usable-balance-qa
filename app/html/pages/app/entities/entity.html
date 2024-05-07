@@ -43,7 +43,9 @@
 
                 <h4 class="pb-2 text-primary">Details</h4>
 
+                {% if entity %}
                 <input type="hidden" id="entity_id" value="{{ entity.id }}" />
+                {% endif %}
                 <div class="mb-3 ps-0">
                     <label for="entity_name" class="form-label">Entity Name (Legal)</label>
                     <input type="text" class="form-control" id="entity_name" placeholder="Acme Co" required aria-describedby="entity_name_help" value="{% if entity %}{{ entity.name }}{% endif %}">
