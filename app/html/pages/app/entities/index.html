@@ -18,18 +18,32 @@
                     </div>
                      <p>Here are entities from <mark>Usable Balance</mark>.
                     </p>
-
                     <div class="row">
-                        <div class="col-sm-4 ">
-                            <a href="/app/entities/?page={{ page - 1 }}&per_page={{ per_page }}" class="btn btn-outline-secondary rounded-pill unrounded-top-right unrounded-bottom-right" type="button">Prev Page</a>
-                        </div>
-                        <div class="col-sm-4 ">
+
+                        <div class="col-sm-12 ">
                             <a href="/" class="btn btn-primary px-4 gap-3 rounded-pill">Back to the Homepage</a>
                             <!-- <a href="/app/connection/myob" class="btn btn-lg btn-outline-primary px-4 gap-3">Connect another organisation via
                                 MYOB</a> -->
                         </div>
-                        <div class="col-sm-4">
-                            <a href="/app/transactions/?page={{ page + 1 }}&per_page={{ per_page }}#" class="btn btn-outline-secondary rounded-pill unrounded-top-left unrounded-bottom-left" type="button" id="button-addon2">Next Page</a>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 border-end"></div>
+                        <div class="col-sm-6">&nbsp;</div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group">
+
+                                <a href="/app/entities/?page={{ page - 1  | default('', true) }}&per_page={{ per_page  | default('', true) }}&search={{ search  | default('', true) }}" class="btn btn-outline-primary rounded-pill unrounded-top-right unrounded-bottom-right {% if page == 1 %}disabled{% endif %}" type="button">Prev Page</a>
+
+
+                                <input type="text" class="form-control" id="transactions-search-keyword-text" placeholder="Search..." aria-label="Search" aria-describedby="search-addon" value="{{ search | default('', true)}}">
+                              <a class="input-group-text btn btn-secondary" id="transactions-search-keyword">
+                                <i class="bi bi-search"></i>
+                              </a>
+
+                                <a href="/app/entities/?page={{ page + 1  | default('', true) }}&per_page={{ per_page  | default('', true) }}&search={{ search  | default('', true) }}" class="btn btn-outline-primary rounded-pill unrounded-top-left unrounded-bottom-left" type="button" id="button-addon2">Next Page</a>
+
                         </div>
                     </div>
                     <div class="row">

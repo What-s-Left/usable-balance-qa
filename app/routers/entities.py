@@ -38,7 +38,12 @@ async def entities_index(
 
     # Get entities
     entities = crud.entity_get_all(
-        db=db.session
+        db=db.session,
+        page=page,
+        per_page=per_page,
+        search={
+            'name': search,
+        }
     )
 
     response = templates.TemplateResponse("pages/app/entities/index.html", {
@@ -82,6 +87,7 @@ async def entity_match_feed(
 @router.get("/match/api/entity", response_class=HTMLResponse)
 async def entity_match_entity(
     request: Request,
+    name: str = None,
     user: dict = Depends(get_qa_current_user),
     access: bool = Depends(get_qa_user_access),
 ):
@@ -90,7 +96,7 @@ async def entity_match_entity(
     entities = crud.entity_get_all(
         db=db.session,
         search={
-            'name': request.query_params.get('name'),
+            'name': name,
         }
     )
 

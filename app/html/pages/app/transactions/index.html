@@ -43,9 +43,9 @@
                                 <option value="RECONCILED_PENDING" {% if status == 'RECONCILED_PENDING'%}selected{% endif %}>Transactions - Pending</option>
                             </select>
                             <input type="text" class="form-control" id="transactions-search-keyword-text" placeholder="Search..." aria-label="Search" aria-describedby="search-addon" value="{{ search | default('', true)}}">
-                          <a class="input-group-text btn btn-secondary" id="transactions-search-keyword">
-                            <i class="bi bi-search"></i>
-                          </a>
+                            <a class="input-group-text btn btn-secondary" id="transactions-search-keyword">
+                                <i class="bi bi-search"></i>
+                            </a>
                             <a href="/app/transactions/?page={{ page + 1  | default('', true) }}&per_page={{ per_page | default('', true)}}&status={{ status  | default('', true)}}&search={{ search  | default('', true)}}" class="btn btn-outline-primary rounded-pill unrounded-top-left unrounded-bottom-left" type="button" id="button-addon2">Next Page</a>
                         </div>
                     </div>

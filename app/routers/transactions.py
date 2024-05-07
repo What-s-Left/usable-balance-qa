@@ -35,7 +35,9 @@ async def reconcile_entity(
         db=db.session,
         page=page,
         per_page=per_page,
-        search=search,
+        search={
+            'desc': search,
+        },
         status=status
     )
 
