@@ -12009,9 +12009,9 @@ input:invalid {
 
 .btn-qa-primary {
   --bs-btn-font-weight: 600;
-  --bs-btn-color: var(--bs-white);
-  --bs-btn-bg: var(--bd-violet-bg);
-  --bs-btn-border-color: var(--bd-violet-bg);
+  --bs-btn-color: var($secondary);
+  --bs-btn-bg: var($secondary);
+  --bs-btn-border-color: var($secondary);
   --bs-btn-hover-color: var(--bs-white);
   --bs-btn-hover-bg: #8000e4;
   --bs-btn-hover-border-color: #8000e4;
