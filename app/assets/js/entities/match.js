@@ -258,10 +258,7 @@ class EntitiesMatch {
             console.error('Error:', error);
             return false;
         });
-
-
     }
-
 }
 
 export { EntitiesMatch };
