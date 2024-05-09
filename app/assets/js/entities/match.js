@@ -234,7 +234,7 @@ class EntitiesMatch {
             ]
         };
 
-        fetch('/app/entities/' + entity_id, {
+        fetch('/app/entities/' + entity_id + '/match', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -222,6 +222,30 @@ async def entities_match(
     return response
 
 
+@router.post("/{entity_id}/match", response_class=HTMLResponse)
+async def entities_match_update(
+    request: Request,
+    entity_id: str,
+    data: schemas.EntityUpdate,
+    user: dict = Depends(get_qa_current_user),
+    access: bool = Depends(get_qa_user_access),
+):
+    entity = crud.entity_get(db=db.session, entity_id=entity_id)
+
+    # Merge Feeds
+    data.feed.extend(entity.feed)
+
+    entity = crud.entity_update(db=db.session, entity_id=entity_id, data=data)
+
+    if request.headers.get("Content-Type") == "application/json":
+        response = JSONResponse({
+            "entity_id": data_helper.to_json(entity.id)
+        })
+    else:
+        response = RedirectResponse(f"/app/entities/{entity.id}")
+
+    return response
+
 @router.get("/new", response_class=HTMLResponse)
 async def entities_new(
     request: Request,
@@ -322,6 +346,8 @@ async def entities_update(
     user: dict = Depends(get_qa_current_user),
     access: bool = Depends(get_qa_user_access),
 ):
+
+    entity = crud.entity_get(db=db.session, entity_id=entity_id)
 
     entity = crud.entity_update(db=db.session, entity_id=entity_id, data=data)
 
