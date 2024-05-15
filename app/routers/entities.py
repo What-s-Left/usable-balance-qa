@@ -88,6 +88,7 @@ async def entity_match_feed(
 async def entity_match_entity(
     request: Request,
     name: str = None,
+    contact: str = None,
     user: dict = Depends(get_qa_current_user),
     access: bool = Depends(get_qa_user_access),
 ):
@@ -97,6 +98,7 @@ async def entity_match_entity(
         db=db.session,
         search={
             'name': name,
+            'contact': contact
         }
     )
 
@@ -113,6 +115,7 @@ async def entity_match_entity(
 async def ext_entity_match_entity(
     request: Request,
     name: str = None,
+    contact: str = None,
     page: int = 1,
     per_page: int = 25,
     user: dict = Depends(get_qa_current_user),
@@ -124,6 +127,7 @@ async def ext_entity_match_entity(
         db=db.session,
         search={
             'name': name,
+            'contact': contact
         },
         page=page,
         per_page=per_page

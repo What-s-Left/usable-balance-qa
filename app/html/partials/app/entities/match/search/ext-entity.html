@@ -20,6 +20,12 @@
                 <p class="mb-0"><em>{{ entity.classification | get_value_from_key('BICDESC') }}</em></p>
                 {% endif %}
                 <p class="mb-0">{{ entity.contact|get_value_from_key('ADDRESS') }}, {{ entity.contact|get_value_from_key('POSTCODE') }}</p>
+                {% if entity.contact | get_value_from_key('EMAIL') %}
+                <p class="mb-0"><em>{{ entity.contact | get_value_from_key('EMAIL') }}</em></p>
+                {% endif %}
+                {% if entity.contact | get_value_from_key('WEBSITE') %}
+                <p class="mb-0"><em>{{ entity.contact | get_value_from_key('WEBSITE') }}</em></p>
+                {% endif %}
             </td>
             <td>
                 {% if entity.entity_matched %}
