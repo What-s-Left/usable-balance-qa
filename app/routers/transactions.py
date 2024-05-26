@@ -20,7 +20,7 @@ router = APIRouter(
 
 
 @router.get("/", response_class=HTMLResponse)
-async def reconcile_entity(
+async def reconcile_transactions(
     request: Request,
     page: int = 1,
     per_page: int = 25,

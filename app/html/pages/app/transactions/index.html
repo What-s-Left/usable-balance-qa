@@ -126,7 +126,7 @@
                             <div class="col-sm-8">
                                 <h4>{{ transaction_line.account.name }}</h4>
                                 {% if transaction_line.account.code.startswith('E-') %}
-                                <p><small>{% if "match_entity" in transaction %}{{ transaction.match_entity.desc }}{% else %}{{ transaction_line.account.desc }}{% endif %}</small></p>
+                                <p><small>{% if transaction.match_entity %}{{ transaction.match_entity.desc }}{% else %}{{ transaction_line.account.desc }}{% endif %}</small></p>
                                 {% else %}
                                 <p><small>{{ transaction_line.account.desc }}</small></p>
 
