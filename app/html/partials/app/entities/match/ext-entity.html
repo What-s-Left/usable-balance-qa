@@ -1,17 +1,26 @@
 <h4 class="pb-2">Search External Entities</h4>
 
 <div class="row g-0 pt-2 border-top">
-    <div class="col-6 mb-3 pe-2">
-        <label class="form-label" for="ext_entity_name">Legal Name/Trading Name(s)</label>
+
+    <div class="col-4 mb-3 pe-2">
+        <label class="form-label" for="ext_entity_name">NZBN/IRD</label>
+        <input type="text" class="form-control" placeholder="1234567890" id="ext_entity_id" aria-describedby="entity_id_search_help" value="">
+        <div id="ext_entity_id_help" class="form-text form-control-sm ps-0">The NZBN or IRD number.</div>
+    </div>
+
+
+    <div class="col-4 mb-3 pe-2">
+        <label class="form-label" for="ext_entity_name">Legal/Trading Name(s)</label>
         <input type="text" class="form-control" placeholder="Acme Co Limited" id="ext_entity_name" aria-describedby="entity_name_search_help" value="{% if entity %}{{ entity.name_legal }}{% elif transaction_payee %}{{ transaction_payee }}{% endif %}">
         <div id="ext_entity_name_help" class="form-text form-control-sm ps-0">The name found in either trading or legal name(s) to import into new Entity.</div>
     </div>
 
-    <div class="col-6 mb-3 ps-2">
-        <label class="form-label" for="ext_entity_contact">Address/Postcode/Website/Email</label>
+    <div class="col-4 mb-3 ps-2">
+        <label class="form-label" for="ext_entity_contact">Contact Details</label>
         <input type="text" class="form-control" placeholder="Wellington" id="ext_entity_contact" aria-describedby="ext_entity_contact_search_help" value="">
         <div id="ext_entity_contact_help" class="form-text form-control-sm ps-0">What is found in their address, post code, email and/or website.</div>
     </div>
+
 </div>
 
 <div class="row">

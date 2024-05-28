@@ -93,10 +93,16 @@ class EntitiesMatch {
 
         const ext_entity_search = document.getElementById('ext-entities-search');
 
-
         // Respond to search button being hit
         if (ext_entity_search)
         {
+            document.getElementById("ext_entity_id").addEventListener("keypress", function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    document.getElementById("ext-entities-search").click();
+                }
+            });
+
             document.getElementById("ext_entity_name").addEventListener("keypress", function(event) {
                 if (event.key === "Enter") {
                     event.preventDefault();
@@ -114,15 +120,17 @@ class EntitiesMatch {
             ext_entity_search.addEventListener('click', event => {
 
                 event.preventDefault();
+                const id_e = document.getElementById('ext_entity_id');
                 const name_e = document.getElementById('ext_entity_name');
                 const contact_e = document.getElementById('ext_entity_contact');
 
                 // Get the values from the input fields
+                const id = id_e.value;
                 const name = name_e.value;
                 const contact = contact_e.value;
 
                 // Construct the URL with the parameters
-                const url = `/app/entities/match/api/ext-entity?name=${encodeURIComponent(name)}&contact=${encodeURIComponent(contact)}`;
+                const url = `/app/entities/match/api/ext-entity?id=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}&contact=${encodeURIComponent(contact)}`;
 
                 const output_e = document.getElementById('ext-entities-match-results')
                 // Make the AJAX GET request using Fetch
