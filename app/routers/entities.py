@@ -14,7 +14,7 @@ from helpers.data import crud, models, schemas
 from helpers.generic.addresses import countries
 from helpers.generic.data import get_value_from_key
 from helpers.generic.secrets import get_secret
-from helpers.generic.templates import templates
+from helpers.generic.templates import render
 from helpers.generic import data as data_helper
 from helpers.app.api import request as api_request
 
@@ -46,7 +46,7 @@ async def entities_index(
         }
     )
 
-    response = templates.TemplateResponse("pages/app/entities/index.html", {
+    response = render("pages/app/entities/index.html", {
         "request": request,
         "user": user,
         "entities": entities,
@@ -75,7 +75,7 @@ async def entity_match_feed(
         }
     )
 
-    response = templates.TemplateResponse("partials/app/entities/match/search/feed.html", {
+    response = render("partials/app/entities/match/search/feed.html", {
         "request": request,
         "user": user,
         "feed": feed
@@ -106,7 +106,7 @@ async def entity_match_entity(
         per_page=per_page
     )
 
-    response = templates.TemplateResponse("partials/app/entities/match/search/entity.html", {
+    response = render("partials/app/entities/match/search/entity.html", {
         "request": request,
         "user": user,
         "entities": entities
@@ -139,7 +139,7 @@ async def ext_entity_match_entity(
         per_page=per_page
     )
 
-    response = templates.TemplateResponse("partials/app/entities/match/search/ext-entity.html", {
+    response = render("partials/app/entities/match/search/ext-entity.html", {
         "request": request,
         "user": user,
         "entities": entities
@@ -193,7 +193,7 @@ async def ext_entity_match_entity_ai(
 
     messages = client.beta.threads.messages.list(thread_id=thread.id)
 
-    response = templates.TemplateResponse("partials/app/entities/match/search/ai-entity.html", {
+    response = render("partials/app/entities/match/search/ai-entity.html", {
         "request": request,
         "user": user,
         "ext_entity": ext_entity,
@@ -220,7 +220,7 @@ async def entities_match(
     if transaction_id:
         transaction = db.session.get(models.Transaction, transaction_id)
 
-    response = templates.TemplateResponse("pages/app/entities/match.html", {
+    response = render("pages/app/entities/match.html", {
         "request": request,
         "user": user,
         "transaction": transaction,
@@ -273,7 +273,7 @@ async def entities_new(
     if transaction_id:
         transaction = db.session.get(models.Transaction, transaction_id)
 
-    response = templates.TemplateResponse("pages/app/entities/entity.html", {
+    response = render("pages/app/entities/entity.html", {
         "request": request,
         "user": user,
         "transaction": transaction,
@@ -330,7 +330,7 @@ async def entities_view(
     if transaction_id:
         transaction = db.session.get(models.Transaction, transaction_id)
 
-    response = templates.TemplateResponse("pages/app/entities/entity.html", {
+    response = render("pages/app/entities/entity.html", {
         "request": request,
         "user": user,
         "entity": entity,

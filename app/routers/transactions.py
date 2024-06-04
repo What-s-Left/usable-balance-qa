@@ -8,7 +8,7 @@ from fastapi_sqlalchemy import db
 
 from helpers.auth.funcs import get_app_current_user, get_qa_current_user, get_qa_user_access
 from helpers.data import crud
-from helpers.generic.templates import templates
+from helpers.generic.templates import render
 from helpers.app.api import request as api_request
 
 router = APIRouter(
@@ -41,7 +41,7 @@ async def reconcile_transactions(
         status=status
     )
 
-    response = templates.TemplateResponse("pages/app/transactions/index.html", {
+    response = render("pages/app/transactions/index.html", {
         "request": request,
         "user": user,
         "page": page,

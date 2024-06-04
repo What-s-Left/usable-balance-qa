@@ -8,7 +8,7 @@ from fastapi_sqlalchemy import db
 
 from helpers.auth.funcs import get_app_current_user, get_qa_current_user, get_qa_user_access
 from helpers.data import crud
-from helpers.generic.templates import templates
+from helpers.generic.templates import render
 from helpers.app.api import request as api_request
 
 router = APIRouter(
@@ -34,7 +34,7 @@ async def rules_index(
         db=db.session
     )
 
-    response = templates.TemplateResponse("pages/app/transactions/index.html", {
+    response = render("pages/app/transactions/index.html", {
         "request": request,
         "user": user,
         "entities": entities
@@ -50,7 +50,7 @@ async def rules_create(
     access: bool = Depends(get_qa_user_access),
 ):
 
-    response = templates.TemplateResponse("pages/app/entities/new.html", {
+    response = render("pages/app/entities/new.html", {
         "request": request,
         "user": user,
     })
@@ -68,7 +68,7 @@ async def rules_view(
 
     rule = crud.rule_get(db=db.session, rule_id=rule_id)
 
-    response = templates.TemplateResponse("pages/app/entities/edit.html", {
+    response = render("pages/app/entities/edit.html", {
         "request": request,
         "user": user,
         "rule": rule
@@ -87,7 +87,7 @@ async def rules_edit(
 
     rule = crud.rule_get(db=db.session, rule_id=rule_id)
 
-    response = templates.TemplateResponse("pages/app/entities/edit.html", {
+    response = render("pages/app/entities/edit.html", {
         "request": request,
         "user": user,
         "rule": rule

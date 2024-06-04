@@ -5,7 +5,7 @@ from fastapi import Depends, HTTPException, APIRouter, Request, Body, Response, 
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from helpers.auth.funcs import get_app_current_user, get_app_user_access, get_qa_current_user, get_qa_user_access
-from helpers.generic.templates import templates
+from helpers.generic.templates import render
 from helpers.app.api import request as api_request
 
 router = APIRouter(
@@ -29,7 +29,7 @@ async def homepage(
     access: bool = Depends(get_qa_user_access),
 ):
 
-    response = templates.TemplateResponse("pages/app/index.html", {
+    response = render("pages/app/index.html", {
         "request": request,
         "user": user,
     })

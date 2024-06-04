@@ -33,7 +33,7 @@
         if (!params.get('state')) {
             // Create unique state to send with login
             state_unique = generateRandomString(20)
-            redirect_url = "{{ env['UB_APP_BASE'] }}"
+            redirect_url = "{{ env['UB_QA_BASE'] }}"
             sessionStorage.setItem('auth_state', state_unique)
             sessionStorage.setItem('auth_redirect', redirect_url)
             timezone = Intl.DateTimeFormat().resolvedOptions().timeZone

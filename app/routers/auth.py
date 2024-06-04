@@ -10,7 +10,7 @@ from fastapi.responses import RedirectResponse, JSONResponse, HTMLResponse
 
 from helpers.app import api
 from helpers.generic.secrets import get_secret
-from helpers.generic.templates import templates
+from helpers.generic.templates import render
 
 router = APIRouter(
     prefix="/auth",
@@ -49,7 +49,7 @@ async def auth_login(
         return RedirectResponse(uri_authorisation[0], status_code=302)
     else:
         # Get the client to set the state
-        return templates.TemplateResponse("pages/auth/login.html", {"request": request})
+        return render("pages/auth/login.html", {"request": request})
 
 
 @router.get("/login/xero", response_class=HTMLResponse)
@@ -76,7 +76,7 @@ async def auth_login_xero(
         return RedirectResponse(uri_authorisation_full, status_code=302)
     else:
         # Get the client to set the state
-        return templates.TemplateResponse("pages/auth/login.html", {"request": request})
+        return render("pages/auth/login.html", {"request": request})
 
 
 @router.get("/callback", response_class=HTMLResponse)
@@ -112,7 +112,7 @@ async def auth_callback(request: Request, code: str):
     request.session["auth_time_issued"] = token["expires_at"] - token["expires_in"]
 
     # return RedirectResponse(request.session['auth_redirect'])
-    return templates.TemplateResponse(
+    return render(
         "pages/auth/callback.html", {"request": request, "env": get_secret}
     )
 
@@ -131,7 +131,7 @@ async def auth_callback(request: Request):
         request.session["auth_token"] = access_token
         return RedirectResponse(request.session.get("auth_redirect"))
 
-    # return templates.TemplateResponse("pages/auth/callback.html", {"request": request})
+    # return render("pages/auth/callback.html", {"request": request})
 
 
 @router.get("/logout", response_class=HTMLResponse)
