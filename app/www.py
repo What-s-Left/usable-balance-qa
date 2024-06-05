@@ -109,7 +109,7 @@ async def catch_exceptions_middleware(request: Request, call_next):
     except Exception as exc:
         # Log the exception here
         return error_response(
-            request=request, status_code=500, detail=", ".join(exc.args)
+            request=request, status_code=500, detail=", ".join(map(str, exc.args))
         )
 
 
@@ -118,7 +118,7 @@ async def universal_exception_handler(request: Request, exc: Exception):
     # print(exc.status_code, exc.detail)
 
     return error_response(
-        request=request, status_code=500, detail=", ".join(exc.args)
+        request=request, status_code=500, detail=", ".join(map(str, exc.args))
     )
 
 @www.exception_handler(StarletteHTTPException)
