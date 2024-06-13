@@ -11,7 +11,7 @@ async function init() {
     await EntitiesManage.setup_listeners()
     await TransactionsSearch.setup_listeners()
 
-    console.log("Usable Balance App - Ready :)");
+    console.log("Usable Balance QA - Ready :)");
 
 }
 
