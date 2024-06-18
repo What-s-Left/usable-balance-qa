@@ -24,3 +24,4 @@ pytz
 PyJWT
 google-generativeai
 openai
+urllib3>=2.2.2 # not directly required, pinned by Snyk to avoid a vulnerability
