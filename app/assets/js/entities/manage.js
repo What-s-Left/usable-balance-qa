@@ -116,8 +116,7 @@ class EntitiesManage {
                     })
                 }
 
-
-                var entity_classification = []
+                let entity_classification = []
 
                 entity_classification.push({
                     "type": "CREDIT",
@@ -137,7 +136,7 @@ class EntitiesManage {
                     })
                 }
 
-                var entity_contact = []
+                let entity_contact = []
 
                 if (entity_contact_address_e.value != "")
                 {
@@ -179,8 +178,8 @@ class EntitiesManage {
                     })
                 }
 
-                var entity_desc = entity_desc_e.value
-                var entity_country = entity_contact_country_e.value
+                let entity_desc = entity_desc_e.value
+                let entity_country = entity_contact_country_e.value
 
 
                 const data= {
