@@ -70,9 +70,9 @@ class EntitiesManage {
                 if (entity_base == null) {
                     entity_base = {
                         'name': null,
-                        'identifier': null,
-                        'classification': null,
-                        'contact': null
+                        'identifier': [],
+                        'classification': [],
+                        'contact': []
                     }
                 }
 
