@@ -67,6 +67,15 @@ class EntitiesManage {
 
                 var entity_base = Data.get('entity_base')
 
+                if (entity_base == null) {
+                    entity_base = {
+                        'name': null,
+                        'identifier': null,
+                        'classification': null,
+                        'contact': null
+                    }
+                }
+
                 var entity_name = entity_name_e.value
                 var entity_id_src
                 var entity_identifier = []
