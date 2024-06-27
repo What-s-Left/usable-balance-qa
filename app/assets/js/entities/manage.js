@@ -15,8 +15,8 @@ class EntitiesManage {
 
                 if (entity_tradingname.value != "") {
                     const entity_identifier_tradingnames_html_template = document.getElementById('entity_identifier_tradingname_value')
-                    var entity_identifier_tradingname_values = document.getElementById('entity_identifier_tradingname_values')
-                    var entity_identifier_tradingnames_html_placeholder = entity_identifier_tradingnames_html_template.cloneNode(true)
+                    let entity_identifier_tradingname_values = document.getElementById('entity_identifier_tradingname_values')
+                    let entity_identifier_tradingnames_html_placeholder = entity_identifier_tradingnames_html_template.cloneNode(true)
 
                     entity_identifier_tradingnames_html_placeholder.removeAttribute('id')
                     entity_identifier_tradingnames_html_placeholder.classList.remove('visually-hidden')
@@ -65,7 +65,7 @@ class EntitiesManage {
                 const entity_contact_website_e = document.getElementById('entity_contact_website');
                 const entity_contact_country_e = document.getElementById('entity_contact_country');
 
-                var entity_base = Data.get('entity_base')
+                let entity_base = Data.get('entity_base')
 
                 if (entity_base == null) {
                     entity_base = {
@@ -76,9 +76,9 @@ class EntitiesManage {
                     }
                 }
 
-                var entity_name = entity_name_e.value
-                var entity_id_src
-                var entity_identifier = []
+                let entity_name = entity_name_e.value
+                let entity_id_src
+                let entity_identifier = []
 
                 /*
                 // Clear Trading Names incase we didn't want some of them, and use the chips to define what to keep
@@ -253,10 +253,10 @@ class EntitiesManage {
                 const entity_contact_website_e = document.getElementById('entity_contact_website');
                 const entity_contact_country_e = document.getElementById('entity_contact_country');
 
-                var entity_id = entity_id_e.value
-                var entity_name = entity_name_e.value
-                var entity_id_src
-                var entity_identifier = []
+                let entity_id = entity_id_e.value
+                let entity_name = entity_name_e.value
+                let entity_id_src
+                let entity_identifier = []
 
                 /*
                 // Clear Trading Names incase we didn't want some of them, and use the chips to define what to keep
@@ -295,7 +295,7 @@ class EntitiesManage {
                 }
 
 
-                var entity_classification = []
+                let entity_classification = []
 
                 entity_classification.push({
                     "type": "CREDIT",
@@ -316,7 +316,7 @@ class EntitiesManage {
                 }
 
 
-                var entity_contact = []
+                let entity_contact = []
 
                 if (entity_contact_address_e.value != "")
                 {
@@ -358,8 +358,8 @@ class EntitiesManage {
                     })
                 }
 
-                var entity_desc = entity_desc_e.value
-                var entity_country = entity_contact_country_e.value
+                let entity_desc = entity_desc_e.value
+                let entity_country = entity_contact_country_e.value
 
                 const data= {
                     "id_src": entity_id_src,
