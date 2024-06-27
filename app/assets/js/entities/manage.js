@@ -117,7 +117,7 @@ class EntitiesManage {
                 }
 
 
-                var entity_classification = entity_base.classification
+                var entity_classification = []
 
                 entity_classification.push({
                     "type": "CREDIT",
