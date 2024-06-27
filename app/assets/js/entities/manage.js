@@ -65,7 +65,7 @@ class EntitiesManage {
                 const entity_contact_website_e = document.getElementById('entity_contact_website');
                 const entity_contact_country_e = document.getElementById('entity_contact_country');
 
-                let entity_base = Data.get('entity_base')
+                let entity_base = Data.get('entity_base');
 
                 if (entity_base == null) {
                     entity_base = {
@@ -76,9 +76,9 @@ class EntitiesManage {
                     }
                 }
 
-                let entity_name = entity_name_e.value
-                let entity_id_src
-                let entity_identifier = []
+                let entity_name = entity_name_e.value;
+                let entity_id_src;
+                let entity_identifier = [];
 
                 /*
                 // Clear Trading Names incase we didn't want some of them, and use the chips to define what to keep
@@ -116,7 +116,7 @@ class EntitiesManage {
                     })
                 }
 
-                let entity_classification = []
+                let entity_classification = [];
 
                 entity_classification.push({
                     "type": "CREDIT",
@@ -136,7 +136,7 @@ class EntitiesManage {
                     })
                 }
 
-                let entity_contact = []
+                let entity_contact = [];
 
                 if (entity_contact_address_e.value != "")
                 {
