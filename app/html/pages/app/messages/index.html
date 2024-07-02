@@ -89,7 +89,16 @@
 
                 <div class="p-4">
                     {% if message.content.from %}
-                    <p class="small">Message from {{ message.content.from }}</p>
+
+                        {% if message.content.from.link %}
+                            <a href="{{ message.content.from.link }}" target="_blank"><i class="bi bi-person-circle"></i>  {{ message.content.from.name }}</a>
+                        {% elif message.content.from.user_id %}
+                            <a href="/app/users/{{ message.content.from.user_id }}" target="_blank"><i class="bi bi-person-circle"></i>  {{ message.content.from.name }}</a>
+                        {% elif message.content.from.entity_id %}
+                            <a href="/app/entities/{{ message.content.from.entity_id }}" target="_blank"><i class="bi bi-person-circle"></i>  {{ message.content.from.name }}</a>
+                        {% else %}
+                            <i class="bi bi-person-circle"></i>  {{ message.content.from }}
+                        {% endif %}
                     {% endif %}
 
 
@@ -121,7 +130,7 @@
             </div>
             <div class="col-sm-2 border rounded-top-5 border-bottom rounded-bottom-5 border-start-0 pb-0 p-3 pe-3 unrounded-top-left unrounded-bottom-left bg-body-secondary">
 
-                {% if message.attachment|get_value_from_key('LOGO', True) %}
+                {% if message.attachment|get_value_from_key('LOGO', True) != "" %}
                 <div class="p-4 justify-content-center">
                     <img src="{{ (message.attachment|get_value_from_key('LOGO', True)).src }}" height="40"  />
                 </div>
